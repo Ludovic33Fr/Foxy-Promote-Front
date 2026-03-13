@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Music, Mail, Lock, User, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Button from '../../components/ui/Button';
 import { useAuth } from '../../context/AuthContext';
 
 const SignupPage = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [artistName, setArtistName] = useState('');
@@ -48,7 +50,7 @@ const SignupPage = () => {
     } catch (error) {
       console.error('Signup error:', error);
       setErrors({
-        form: 'Failed to create an account. Please try again.',
+        form: t('auth.signup.errors.invalid'),
       });
     } finally {
       setIsLoading(false);
@@ -65,12 +67,12 @@ const SignupPage = () => {
           </span>
         </Link>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-foreground">
-          Create your account
+          {t('auth.signup.title')}
         </h2>
         <p className="mt-2 text-center text-sm text-muted-foreground">
-          Already have an account?{' '}
+          {t('auth.signup.has_account')}{' '}
           <Link to="/login" className="font-medium text-primary hover:text-primary/80">
-            Sign in
+            {t('auth.signup.login')}
           </Link>
         </p>
       </div>
@@ -86,7 +88,7 @@ const SignupPage = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="artistName" className="block text-sm font-medium text-foreground">
-                Artist Name
+                {t('auth.signup.artist_name')}
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -111,7 +113,7 @@ const SignupPage = () => {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-foreground">
-                Email address
+                {t('auth.signup.email')}
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -137,7 +139,7 @@ const SignupPage = () => {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-foreground">
-                Password
+                {t('auth.signup.password')}
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -171,7 +173,7 @@ const SignupPage = () => {
                 isLoading={isLoading}
                 rightIcon={<ArrowRight className="h-4 w-4" />}
               >
-                Create Account
+                {t('auth.signup.button')}
               </Button>
             </div>
           </form>
@@ -183,7 +185,7 @@ const SignupPage = () => {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 bg-card text-muted-foreground">
-                  Or continue with
+                  {t('auth.login.or_continue')}
                 </span>
               </div>
             </div>
@@ -215,14 +217,7 @@ const SignupPage = () => {
 
           <div className="mt-6">
             <p className="text-xs text-center text-muted-foreground">
-              By signing up, you agree to our{' '}
-              <a href="#" className="font-medium text-primary hover:text-primary/80">
-                Terms of Service
-              </a>{' '}
-              and{' '}
-              <a href="#" className="font-medium text-primary hover:text-primary/80">
-                Privacy Policy
-              </a>
+              {t('auth.signup.terms')}
             </p>
           </div>
         </div>

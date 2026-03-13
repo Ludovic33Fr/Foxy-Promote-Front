@@ -1,5 +1,6 @@
 import { PlayCircle, Clock, Music, BarChart } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Track } from '../../types';
 
 interface TrackCardProps {
@@ -7,6 +8,8 @@ interface TrackCardProps {
 }
 
 const TrackCard = ({ track }: TrackCardProps) => {
+  const { t } = useTranslation();
+  
   const formatDuration = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = Math.floor(seconds % 60);
@@ -29,13 +32,13 @@ const TrackCard = ({ track }: TrackCardProps) => {
   const getStatusText = (status: Track['status']) => {
     switch (status) {
       case 'analyzing':
-        return 'Analyzing...';
+        return t('dashboard.track_status.analyzing');
       case 'analyzed':
-        return 'Ready';
+        return t('dashboard.track_status.ready');
       case 'error':
-        return 'Error';
+        return t('dashboard.track_status.error');
       default:
-        return 'Unknown';
+        return t('dashboard.track_status.unknown');
     }
   };
 
@@ -97,7 +100,7 @@ const TrackCard = ({ track }: TrackCardProps) => {
               to={`/analysis/${track.id}`}
               className="text-primary hover:text-primary/80 font-medium text-sm flex items-center"
             >
-              View Analysis
+              {t('dashboard.track_actions.view_analysis')}
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>
@@ -105,11 +108,11 @@ const TrackCard = ({ track }: TrackCardProps) => {
           ) : track.status === 'analyzing' ? (
             <div className="flex items-center text-sm text-muted-foreground">
               <div className="mr-2 h-4 w-4 rounded-full border-2 border-t-primary/60 border-r-primary/60 border-b-primary/10 border-l-primary/10 animate-spin"></div>
-              Analysis in progress...
+              {t('dashboard.track_status.analyzing_msg')}
             </div>
           ) : (
             <button className="text-primary hover:text-primary/80 font-medium text-sm">
-              Retry Analysis
+              {t('dashboard.track_actions.retry')}
             </button>
           )}
         </div>
@@ -118,4 +121,4 @@ const TrackCard = ({ track }: TrackCardProps) => {
   );
 };
 
-export default TrackCard;
+export default TrackCard;

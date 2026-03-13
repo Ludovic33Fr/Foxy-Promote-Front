@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Play, Pause, Clock, Music, BarChart, Share2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Navbar from '../../components/layout/Navbar';
 import Button from '../../components/ui/Button';
 import FeedbackSection from '../../components/analysis/FeedbackSection';
@@ -8,6 +9,7 @@ import ChatInterface from '../../components/analysis/ChatInterface';
 import { Track, Analysis, ChatMessage } from '../../types';
 
 const AnalysisPage = () => {
+  const { t } = useTranslation();
   const { trackId } = useParams<{ trackId: string }>();
   const [track, setTrack] = useState<Track | null>(null);
   const [analysis, setAnalysis] = useState<Analysis | null>(null);
@@ -166,7 +168,7 @@ const AnalysisPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col items-center justify-center py-12">
             <div className="h-10 w-10 rounded-full border-4 border-primary border-t-transparent animate-spin mb-4"></div>
-            <p className="text-muted-foreground">Loading analysis...</p>
+            <p className="text-muted-foreground">{t('analysis.coach.loading')}</p>
           </div>
         </div>
       </div>
@@ -179,13 +181,13 @@ const AnalysisPage = () => {
         <Navbar />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="text-center py-12">
-            <h2 className="text-xl font-semibold">Track not found</h2>
+            <h2 className="text-xl font-semibold">{t('dashboard.empty.title')}</h2>
             <p className="text-muted-foreground mt-2">
-              The track you're looking for doesn't exist or has been removed.
+              {t('dashboard.empty.desc')}
             </p>
             <Link to="/dashboard" className="mt-4 inline-block">
               <Button leftIcon={<ArrowLeft className="h-4 w-4" />}>
-                Back to Dashboard
+                {t('analysis.back_to_dashboard')}
               </Button>
             </Link>
           </div>
@@ -202,7 +204,7 @@ const AnalysisPage = () => {
         <div className="mb-8">
           <Link to="/dashboard" className="text-primary hover:text-primary/80 inline-flex items-center">
             <ArrowLeft className="h-4 w-4 mr-1" />
-            Back to Dashboard
+            {t('analysis.back_to_dashboard')}
           </Link>
         </div>
         
@@ -276,7 +278,7 @@ const AnalysisPage = () => {
                 size="sm"
                 leftIcon={<Share2 className="h-4 w-4" />}
               >
-                Share Analysis
+                {t('footer.contact')}
               </Button>
             </div>
           </div>
@@ -285,7 +287,7 @@ const AnalysisPage = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Feedback section - takes up 2/3 on large screens */}
           <div className="lg:col-span-2">
-            <h2 className="text-xl font-semibold mb-4">AI Analysis</h2>
+            <h2 className="text-xl font-semibold mb-4">{t('analysis.title')}</h2>
             <FeedbackSection analysis={analysis} />
           </div>
           

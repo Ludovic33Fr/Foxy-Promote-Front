@@ -1,0 +1,309 @@
+{
+  "nav": {
+    "home": "Accueil",
+    "dashboard": "Tableau de Bord",
+    "promotion": "Promotion",
+    "pricing": "Tarifs",
+    "login": "Connexion",
+    "signup": "S'inscrire",
+    "logout": "Se déconnecter",
+    "profile": "Votre Profil"
+  },
+  "landing": {
+    "hero": {
+      "title": "Votre Coach Musical IA Personnel",
+      "subtitle": "Obtenez des retours professionnels, améliorez vos morceaux et connectez-vous avec des labels. La plateforme propulsée par l'IA pour les artistes qui veulent se développer.",
+      "startFree": "Commencer Gratuitement",
+      "viewPricing": "Voir les Tarifs",
+      "noCreditCard": "Aucune carte bancaire requise • Version gratuite disponible",
+      "ai_coach_title": "Analyse du Coach IA",
+      "ai_coach_msg": "\"Votre morceau a une excellente énergie mais pourrait bénéficier d'une plus grande plage dynamique dans la section du refrain...\"",
+      "label_interest_title": "Intérêt des Labels",
+      "label_interest_msg": "\"Underground Records est intéressé par votre morceau 'Midnight Dreams' !\""
+    },
+    "features": {
+      "title": "Tout ce dont vous avez besoin pour développer votre carrière musicale",
+      "subtitle": "TrackTraxx fournit tous les outils nécessaires pour analyser votre musique, promouvoir vos sorties et vous connecter avec des labels et des curateurs.",
+      "f1Title": "Analyses Intelligentes",
+      "f1Desc": "Obtenez des informations approfondies sur les performances de votre musique sur toutes les principales plateformes de streaming.",
+      "f2Title": "Accès aux Curateurs",
+      "f2Desc": "Connectez-vous directement avec des curateurs qui recherchent de la musique comme la vôtre.",
+      "f3Title": "Gestion de Sortie",
+      "f3Desc": "Planifiez et exécutez vos sorties avec nos outils de gestion complets.",
+      "f4Title": "Téléchargements Faciles",
+      "f4Desc": "Glissez-déposez vos morceaux pour commencer avec une analyse IA instantanée.",
+      "f5Title": "Tendances Musicales",
+      "f5Desc": "Restez à l'avant-garde avec des informations en temps réel sur les tendances musicales émergentes.",
+      "f6Title": "Coaching IA",
+      "f6Desc": "Recevez des conseils personnalisés de notre coach musical IA pour améliorer votre son."
+    },
+    "testimonials": {
+      "title": "Aimé par les artistes indépendants du monde entier",
+      "subtitle": "Rejoignez des milliers d'artistes qui utilisent TrackTraxx pour propulser leur carrière au niveau supérieur.",
+      "t1": {
+        "name": "Jane Doe",
+        "role": "Productrice Électronique",
+        "content": "TrackTraxx a changé ma façon d'aborder mes sorties. Les analyses changent la donne."
+      },
+      "t2": {
+        "name": "Sam Lee",
+        "role": "Artiste Indé",
+        "content": "J'ai enfin l'impression d'avoir une équipe derrière moi. L'accès aux curateurs est si facile à utiliser."
+      },
+      "t3": {
+        "name": "Maria Rodriguez",
+        "role": "Auteure-Compositeure",
+        "content": "Le coach IA m'a donné des retours qui ont réellement amélioré mon dernier morceau. Je recommande vivement."
+      }
+    },
+    "cta": {
+      "title": "Prêt à lancer votre prochain succès ?",
+      "subtitle": "Rejoignez TrackTraxx aujourd'hui et commencez à bénéficier du soutien spécialisé que votre musique mérite.",
+      "startTrial": "Démarrer l'essai gratuit",
+      "login": "Se connecter"
+    }
+  },
+  "footer": {
+    "desc": "La plateforme tout-en-un pour les artistes indépendants afin de promouvoir, analyser et développer leur carrière musicale.",
+    "product": "Produit",
+    "features": "Fonctionnalités",
+    "pricing": "Tarifs",
+    "testimonials": "Témoignages",
+    "faq": "FAQ",
+    "company": "Entreprise",
+    "about": "À propos de nous",
+    "blog": "Blog",
+    "careers": "Carrières",
+    "contact": "Contact",
+    "legal": "Légal",
+    "privacy": "Politique de confidentialité",
+    "terms": "Conditions d'utilisation",
+    "copyright": "Droits d'auteur",
+    "rights": "Tous droits réservés."
+  },
+  "pricing": {
+    "title": "Choisissez votre forfait",
+    "subtitle": "Débloquez tout le potentiel de votre musique avec nos fonctionnalités premium. Commencez gratuitement et évoluez au fur et à mesure que vous grandissez.",
+    "monthly": "Mensuel",
+    "yearly": "Annuel",
+    "save": "Économisez {{percent}}%",
+    "compare": "Comparer les fonctionnalités des forfaits",
+    "feature": "Fonctionnalité",
+    "plan_free": "Gratuit",
+    "plan_artist": "Artiste",
+    "plan_pro": "Pro",
+    "plans": {
+      "free": {
+        "name": "Gratuit",
+        "features": [
+          "Retour IA basique",
+          "3 téléchargements de morceaux par mois",
+          "1 soumission aux labels par mois",
+          "Chat limité avec le coach IA"
+        ]
+      },
+      "artist": {
+        "name": "Artiste",
+        "features": [
+          "Retour IA détaillé",
+          "15 téléchargements de morceaux par mois",
+          "5 soumissions aux labels par mois",
+          "Chat illimité avec le coach IA",
+          "Support prioritaire"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "features": [
+          "Retour IA avancé",
+          "Téléchargements de morceaux illimités",
+          "15 soumissions aux labels par mois",
+          "Chat illimité avec le coach IA",
+          "Support prioritaire",
+          "Analyses exclusives du secteur",
+          "Suivi de la croissance personnelle"
+        ]
+      }
+    },
+    "features": {
+      "uploads": "Téléchargements de morceaux",
+      "submissions": "Soumissions aux labels",
+      "feedback": "Niveau de détail du retour IA",
+      "chat": "Chat avec le coach IA",
+      "support": "Support prioritaire",
+      "insights": "Analyses du secteur",
+      "growth": "Suivi de la croissance",
+      "values": {
+        "basic": "Basique",
+        "detailed": "Détaillé",
+        "advanced": "Avancé",
+        "limited": "Limité",
+        "unlimited": "Illimité"
+      }
+    },
+    "faq": {
+      "title": "Foire Aux Questions",
+      "q1": "Puis-je annuler mon abonnement ?",
+      "a1": "Oui, vous pouvez annuler votre abonnement à tout moment. Vous continuerez à avoir accès aux fonctionnalités de votre forfait jusqu'à la fin de votre période de facturation en cours.",
+      "q2": "Comment fonctionnent les soumissions aux labels ?",
+      "a2": "Lorsque vous soumettez un morceau, nous le mettons en relation avec les labels et les curateurs de notre réseau en fonction du genre, de la qualité et du potentiel commercial. S'il y a un intérêt, nous vous mettrons directement en contact.",
+      "q3": "Quel type de retour vais-je obtenir ?",
+      "a3": "Notre IA analyse votre morceau et fournit des retours sur le mixage, le mastering, la composition, l'arrangement, et plus encore. Les forfaits de niveau supérieur offrent des retours plus détaillés et des recommandations personnalisées.",
+      "q4": "Y a-t-il un essai gratuit pour les forfaits premium ?",
+      "a4": "Oui, nous offrons un essai gratuit de 7 jours pour les forfaits Artiste et Pro. Vous ne serez pas facturé avant la fin de la période d'essai et vous pouvez annuler à tout moment."
+    },
+    "month": "mois",
+    "year": "an",
+    "current_plan": "Forfait Actuel",
+    "upgrade": "Améliorer",
+    "free_to_use": "Utilisation Gratuite"
+  },
+  "checkout": {
+    "back_to_pricing": "Retour aux Tarifs",
+    "title": "Finalisez votre achat",
+    "payment_method": "Méthode de Paiement",
+    "credit_card": "Carte de Crédit",
+    "paypal": "PayPal",
+    "card_number": "Numéro de Carte",
+    "card_name": "Nom du Titulaire",
+    "expiry_date": "Date d'Expiration",
+    "cvc": "CVC",
+    "processing": "Traitement en cours...",
+    "pay": "Payer {{amount}}$",
+    "secure_payment_msg": "Paiement sécurisé traité par Stripe",
+    "continue_paypal": "Continuer avec PayPal",
+    "order_summary": "Résumé de la Commande",
+    "total": "Total",
+    "billed_msg": "Facturé par {{interval}}. Annulez à tout moment.",
+    "validation_error": "Veuillez remplir tous les détails de paiement",
+    "payment_failed": "Le paiement a échoué. Veuillez réessayer."
+  },
+  "promotion": {
+    "title": "Promotion",
+    "subtitle": "Soumettez vos morceaux à des labels et des curateurs",
+    "remaining": "{{count}} soumissions restantes ce mois-ci",
+    "howItWorks": {
+      "title": "Comment fonctionne la promotion",
+      "desc": "Soumettez vos meilleurs morceaux à notre réseau de labels, de curateurs de playlists et de professionnels de l'industrie. Nous associerons votre musique aux bons contacts en fonction du genre, de la qualité et du potentiel commercial. Vous serez informé s'il y a un intérêt pour votre morceau."
+    },
+    "upgrade": {
+      "title": "Débloquez plus de soumissions",
+      "desc": "Passez à un forfait premium pour obtenir plus de soumissions aux labels et augmenter vos chances d'être découvert.",
+      "view": "Voir les forfaits"
+    },
+    "ready": "Prêt pour soumission",
+    "loading": "Chargement de vos morceaux...",
+    "empty": {
+      "title": "Aucun morceau prêt pour soumission",
+      "desc": "Vous devez téléverser et analyser des morceaux avant de pouvoir les soumettre pour promotion.",
+      "dashboard": "Aller au tableau de bord"
+    },
+    "history": {
+      "title": "Historique des soumissions",
+      "none": "Vous n'avez pas encore soumis de morceaux."
+    }
+  },
+  "dashboard": {
+    "title": "Vos morceaux",
+    "subtitle": "Téléversez des morceaux pour une analyse et des retours par l'IA",
+    "remaining_uploads": "{{count}} téléversements restants",
+    "upload_button": "Téléverser un morceau",
+    "loading": "Chargement de vos morceaux...",
+    "free_plan": {
+      "title": "Vous êtes sur le forfait Gratuit",
+      "desc": "Passez à un forfait supérieur pour obtenir plus de téléversements, une analyse détaillée et des soumissions aux labels.",
+      "view": "Voir les forfaits"
+    },
+    "empty": {
+      "title": "Aucun morceau pour l'instant",
+      "desc": "Commencez par téléverser votre premier morceau pour une analyse par l'IA et des retours personnalisés.",
+      "button": "Téléverser votre premier morceau"
+    },
+    "track_status": {
+      "analyzing": "Analyse en cours...",
+      "ready": "Prêt",
+      "error": "Erreur",
+      "unknown": "Inconnu",
+      "analyzing_msg": "Analyse en cours..."
+    },
+    "track_actions": {
+      "view_analysis": "Voir l'analyse",
+      "retry": "Réessayer l'analyse"
+    }
+  },
+  "analysis": {
+    "title": "Analyse du Morceau",
+    "back_to_dashboard": "Retour au Tableau de Bord",
+    "overall_score": "Score IA Global",
+    "score_msg": "Basé sur les standards professionnels de l'industrie",
+    "view_on_spotify": "Voir sur Spotify",
+    "track_info": "Informations du Morceau",
+    "analysis_overview": "Aperçu de l'Analyse",
+    "feedback": {
+      "title": "Retours Détaillés",
+      "no_feedback": "Aucun retour disponible pour ce morceau.",
+      "sections": {
+        "mixing": "Mixage & Mastering",
+        "arrangement": "Arrangement & Structure",
+        "commercial": "Potentiel Commercial",
+        "creativity": "Créativité & Style"
+      },
+      "strengths": "Points Forts",
+      "improvements": "Axes d'Amélioration",
+      "tips": "Conseils Pro"
+    },
+    "metrics": {
+      "title": "Métriques Techniques",
+      "energy": "Énergie",
+      "danceability": "Dansabilité",
+      "valence": "Positivité",
+      "tempo": "Tempo",
+      "key": "Tonalité",
+      "loudness": "Volume (Loudness)",
+      "acousticness": "Acoustique",
+      "instrumentalness": "Instrumentalité"
+    },
+    "coach": {
+      "title": "Chatter avec le Coach IA",
+      "placeholder": "Posez une question sur ce morceau...",
+      "loading": "Le coach réfléchit...",
+      "suggestions": {
+        "mixing": "Comment améliorer le mix ?",
+        "arrangement": "Que penses-tu de l'arrangement ?",
+        "commercial": "Est-ce prêt pour la radio ?",
+        "genre": "Quel est le genre musical ?"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Connectez-vous à votre compte",
+      "no_account": "Vous n'avez pas de compte ?",
+      "signup": "S'inscrire",
+      "email": "Adresse e-mail",
+      "password": "Mot de passe",
+      "remember": "Se souvenir de moi",
+      "forgot": "Mot de passe oublié ?",
+      "button": "Se connecter",
+      "or_continue": "Ou continuer avec",
+      "errors": {
+        "required": "Veuillez entrer votre e-mail et votre mot de passe",
+        "invalid": "E-mail ou mot de passe invalide"
+      }
+    },
+    "signup": {
+      "title": "Créez votre compte",
+      "has_account": "Vous avez déjà un compte ?",
+      "login": "Se connecter",
+      "artist_name": "Nom d'artiste",
+      "email": "Adresse e-mail",
+      "password": "Mot de passe",
+      "terms": "En vous inscrivant, vous acceptez nos Conditions d'utilisation et notre Politique de confidentialité",
+      "button": "Créer un compte",
+      "errors": {
+        "required": "Veuillez remplir tous les champs",
+        "invalid": "Échec de l'inscription. Veuillez réessayer."
+      }
+    }
+  }
+}

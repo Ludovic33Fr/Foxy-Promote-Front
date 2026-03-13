@@ -1,4 +1,5 @@
 import { CheckCircle, XCircle, BarChart4, Music, Volume2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Analysis } from '../../types';
 
 interface FeedbackSectionProps {
@@ -6,14 +7,16 @@ interface FeedbackSectionProps {
 }
 
 const FeedbackSection = ({ analysis }: FeedbackSectionProps) => {
+  const { t } = useTranslation();
+  
   return (
     <div className="space-y-6">
       {/* Overall Score */}
       <div className="flex flex-col sm:flex-row sm:items-center bg-card rounded-lg border border-border p-4 mb-6">
         <div className="flex-1 mb-4 sm:mb-0">
-          <h3 className="text-lg font-semibold mb-1">Overall Track Score</h3>
+          <h3 className="text-lg font-semibold mb-1">{t('analysis.overall_score')}</h3>
           <p className="text-sm text-muted-foreground">
-            Based on composition, arrangement, mixing, and marketability
+            {t('analysis.score_msg')}
           </p>
         </div>
         <div className="flex items-center justify-center">
@@ -54,7 +57,7 @@ const FeedbackSection = ({ analysis }: FeedbackSectionProps) => {
           <div className="bg-green-50 dark:bg-green-900/20 p-4 border-b border-border">
             <h3 className="text-lg font-semibold flex items-center text-green-700 dark:text-green-400">
               <CheckCircle className="h-5 w-5 mr-2" />
-              Strengths
+              {t('analysis.feedback.strengths')}
             </h3>
           </div>
           <div className="p-4">
@@ -74,7 +77,7 @@ const FeedbackSection = ({ analysis }: FeedbackSectionProps) => {
           <div className="bg-amber-50 dark:bg-amber-900/20 p-4 border-b border-border">
             <h3 className="text-lg font-semibold flex items-center text-amber-700 dark:text-amber-400">
               <XCircle className="h-5 w-5 mr-2" />
-              Areas for Improvement
+              {t('analysis.feedback.improvements')}
             </h3>
           </div>
           <div className="p-4">
@@ -95,14 +98,14 @@ const FeedbackSection = ({ analysis }: FeedbackSectionProps) => {
         <div className="p-4 border-b border-border">
           <h3 className="text-lg font-semibold flex items-center">
             <BarChart4 className="h-5 w-5 mr-2" />
-            Technical Feedback
+            {t('analysis.feedback.title')}
           </h3>
         </div>
         <div className="p-4 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="p-3 rounded-lg bg-muted">
             <h4 className="font-medium mb-2 flex items-center">
               <Music className="h-4 w-4 mr-2 text-primary" />
-              Composition
+              {t('analysis.feedback.sections.creativity')}
             </h4>
             <p className="text-sm text-muted-foreground">{analysis.technicalFeedback.composition}</p>
           </div>
@@ -122,7 +125,7 @@ const FeedbackSection = ({ analysis }: FeedbackSectionProps) => {
                 <circle cx="6" cy="18" r="3" />
                 <circle cx="18" cy="16" r="3" />
               </svg>
-              Arrangement
+              {t('analysis.feedback.sections.arrangement')}
             </h4>
             <p className="text-sm text-muted-foreground">{analysis.technicalFeedback.arrangement}</p>
           </div>
@@ -144,14 +147,14 @@ const FeedbackSection = ({ analysis }: FeedbackSectionProps) => {
                 <path d="M14 16v-6" />
                 <path d="M18 12v-2" />
               </svg>
-              Mixing
+              {t('analysis.feedback.sections.mixing')}
             </h4>
             <p className="text-sm text-muted-foreground">{analysis.technicalFeedback.mixing}</p>
           </div>
           <div className="p-3 rounded-lg bg-muted">
             <h4 className="font-medium mb-2 flex items-center">
               <Volume2 className="h-4 w-4 mr-2 text-primary" />
-              Mastering
+              {t('analysis.feedback.sections.commercial')}
             </h4>
             <p className="text-sm text-muted-foreground">{analysis.technicalFeedback.mastering}</p>
           </div>
@@ -175,7 +178,7 @@ const FeedbackSection = ({ analysis }: FeedbackSectionProps) => {
               <path d="M12 16V6m-8 6h16" />
               <circle cx="12" cy="12" r="10" />
             </svg>
-            Marketing Tips
+            {t('analysis.feedback.tips')}
           </h3>
         </div>
         <div className="p-4">
@@ -193,4 +196,4 @@ const FeedbackSection = ({ analysis }: FeedbackSectionProps) => {
   );
 };
 
-export default FeedbackSection;
+export default FeedbackSection;

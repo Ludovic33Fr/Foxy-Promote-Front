@@ -1,5 +1,6 @@
 import { Check } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import Button from '../ui/Button';
 import { SubscriptionPlan } from '../../types';
 import { useSubscription } from '../../context/SubscriptionContext';
@@ -9,6 +10,7 @@ interface PricingCardProps {
 }
 
 const PricingCard = ({ plan }: PricingCardProps) => {
+  const { t } = useTranslation();
   const { userSubscription } = useSubscription();
   const isCurrentPlan = userSubscription?.planId === plan.id;
   
@@ -28,15 +30,15 @@ const PricingCard = ({ plan }: PricingCardProps) => {
       )}
       
       <div className="p-6">
-        <h3 className="text-xl font-bold">{plan.name}</h3>
+        <h3 className="text-xl font-bold">{t(`pricing.plans.${plan.id}.name`)}</h3>
         
         <div className="mt-4 flex items-baseline">
           <span className="text-3xl font-extrabold">${plan.price}</span>
-          <span className="ml-1 text-muted-foreground text-sm">/{plan.interval}</span>
+          <span className="ml-1 text-muted-foreground text-sm">/{t(`pricing.${plan.interval}`)}</span>
         </div>
         
         <ul className="mt-6 space-y-4">
-          {plan.features.map((feature, index) => (
+          {(t(`pricing.plans.${plan.id}.features`, { returnObjects: true }) as string[]).map((feature, index) => (
             <li key={index} className="flex">
               <Check className="h-5 w-5 text-green-500 mr-2 flex-shrink-0" />
               <span className="text-sm">{feature}</span>
@@ -51,7 +53,7 @@ const PricingCard = ({ plan }: PricingCardProps) => {
               fullWidth
               disabled
             >
-              Current Plan
+              {t('pricing.current_plan', { defaultValue: 'Current Plan' })}
             </Button>
           ) : (
             <Link to={plan.price > 0 ? "/checkout" : "#"} state={{ plan }}>
@@ -59,7 +61,9 @@ const PricingCard = ({ plan }: PricingCardProps) => {
                 variant={plan.price > 0 ? "primary" : "outline"}
                 fullWidth
               >
-                {plan.price > 0 ? "Upgrade" : "Free to Use"}
+                {plan.price > 0 
+                  ? t('pricing.upgrade', { defaultValue: 'Upgrade' }) 
+                  : t('pricing.free_to_use', { defaultValue: 'Free to Use' })}
               </Button>
             </Link>
           )}

@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Music, Mail, Lock, ArrowRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Button from '../../components/ui/Button';
 import { useAuth } from '../../context/AuthContext';
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +22,7 @@ const LoginPage = () => {
     e.preventDefault();
     
     if (!email || !password) {
-      setError('Please enter both email and password');
+      setError(t('auth.login.errors.required'));
       return;
     }
     
@@ -31,7 +33,7 @@ const LoginPage = () => {
       navigate(from, { replace: true });
     } catch (error) {
       console.error('Login error:', error);
-      setError('Invalid email or password');
+      setError(t('auth.login.errors.invalid'));
     } finally {
       setIsLoading(false);
     }
@@ -47,12 +49,12 @@ const LoginPage = () => {
           </span>
         </Link>
         <h2 className="mt-6 text-center text-3xl font-extrabold text-foreground">
-          Sign in to your account
+          {t('auth.login.title')}
         </h2>
         <p className="mt-2 text-center text-sm text-muted-foreground">
-          Don't have an account?{' '}
+          {t('auth.login.no_account')}{' '}
           <Link to="/signup" className="font-medium text-primary hover:text-primary/80">
-            Sign up
+            {t('auth.login.signup')}
           </Link>
         </p>
       </div>
@@ -68,7 +70,7 @@ const LoginPage = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-foreground">
-                Email address
+                {t('auth.login.email')}
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -90,7 +92,7 @@ const LoginPage = () => {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-foreground">
-                Password
+                {t('auth.login.password')}
               </label>
               <div className="mt-1 relative rounded-md shadow-sm">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -119,13 +121,13 @@ const LoginPage = () => {
                   className="h-4 w-4 text-primary focus:ring-primary/50 border-border rounded bg-background"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-muted-foreground">
-                  Remember me
+                  {t('auth.login.remember')}
                 </label>
               </div>
 
               <div className="text-sm">
                 <a href="#" className="font-medium text-primary hover:text-primary/80">
-                  Forgot your password?
+                  {t('auth.login.forgot')}
                 </a>
               </div>
             </div>
@@ -137,7 +139,7 @@ const LoginPage = () => {
                 isLoading={isLoading}
                 rightIcon={<ArrowRight className="h-4 w-4" />}
               >
-                Sign in
+                {t('auth.login.button')}
               </Button>
             </div>
           </form>
@@ -149,7 +151,7 @@ const LoginPage = () => {
               </div>
               <div className="relative flex justify-center text-sm">
                 <span className="px-2 bg-card text-muted-foreground">
-                  Or continue with
+                  {t('auth.login.or_continue')}
                 </span>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Send, User, Bot } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Button from '../ui/Button';
 import { ChatMessage } from '../../types';
 
@@ -14,6 +15,7 @@ const ChatInterface = ({
   onSendMessage,
   isAiTyping = false,
 }: ChatInterfaceProps) => {
+  const { t } = useTranslation();
   const [inputValue, setInputValue] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
@@ -33,9 +35,9 @@ const ChatInterface = ({
   return (
     <div className="flex flex-col h-full bg-card rounded-lg border border-border shadow-sm">
       <div className="p-4 border-b border-border">
-        <h3 className="text-lg font-semibold">AI Coach Chat</h3>
+        <h3 className="text-lg font-semibold">{t('analysis.coach.title')}</h3>
         <p className="text-sm text-muted-foreground">
-          Ask questions about your track or get personalized advice
+          {t('analysis.score_msg')}
         </p>
       </div>
       
@@ -45,7 +47,7 @@ const ChatInterface = ({
             <div>
               <Bot className="h-12 w-12 mx-auto mb-3 text-primary/40" />
               <p className="text-sm">
-                No messages yet. Start a conversation with your AI coach.
+                {t('analysis.feedback.no_feedback')}
               </p>
             </div>
           </div>
@@ -67,13 +69,13 @@ const ChatInterface = ({
                 <div className="flex items-center mb-1">
                   {message.sender === 'user' ? (
                     <div className="flex items-center">
-                      <span className="text-xs opacity-80">You</span>
+                      <span className="text-xs opacity-80">{t('auth.register.submit')}</span>
                       <User className="h-3 w-3 ml-1 opacity-80" />
                     </div>
                   ) : (
                     <div className="flex items-center">
                       <Bot className="h-3 w-3 mr-1 opacity-80" />
-                      <span className="text-xs opacity-80">AI Coach</span>
+                      <span className="text-xs opacity-80">{t('analysis.coach.title')}</span>
                     </div>
                   )}
                 </div>
@@ -94,7 +96,7 @@ const ChatInterface = ({
             <div className="max-w-[80%] rounded-lg px-4 py-2 bg-muted text-foreground rounded-tl-none">
               <div className="flex items-center mb-1">
                 <Bot className="h-3 w-3 mr-1 opacity-80" />
-                <span className="text-xs opacity-80">AI Coach</span>
+                <span className="text-xs opacity-80">{t('analysis.coach.title')}</span>
               </div>
               <div className="flex space-x-1 py-2">
                 <div className="h-2 w-2 rounded-full bg-primary/60 animate-bounce" style={{ animationDelay: '0ms' }}></div>
@@ -114,7 +116,7 @@ const ChatInterface = ({
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Ask a question..."
+            placeholder={t('analysis.coach.placeholder')}
             className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 bg-background"
           />
           <Button type="submit" disabled={!inputValue.trim() || isAiTyping}>
@@ -126,4 +128,4 @@ const ChatInterface = ({
   );
 };
 
-export default ChatInterface;
+export default ChatInterface;

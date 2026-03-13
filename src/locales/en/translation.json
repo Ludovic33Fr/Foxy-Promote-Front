@@ -1,0 +1,309 @@
+{
+  "nav": {
+    "home": "Home",
+    "dashboard": "Dashboard",
+    "promotion": "Promotion",
+    "pricing": "Pricing",
+    "login": "Login",
+    "signup": "Sign Up",
+    "logout": "Sign out",
+    "profile": "Your Profile"
+  },
+  "landing": {
+    "hero": {
+      "title": "Your Personal AI Music Coach",
+      "subtitle": "Get professional feedback, improve your tracks, and connect with labels. The AI-powered platform for artists who want to grow.",
+      "startFree": "Get Started for Free",
+      "viewPricing": "View Pricing",
+      "noCreditCard": "No credit card required • Free tier available",
+      "ai_coach_title": "AI Coach Analysis",
+      "ai_coach_msg": "\"Your track has great energy but could use more dynamic range in the chorus section...\"",
+      "label_interest_title": "Label Interest",
+      "label_interest_msg": "\"Underground Records is interested in your track 'Midnight Dreams'!\""
+    },
+    "features": {
+      "title": "Everything you need to grow your music career",
+      "subtitle": "TrackTraxx provides all the tools you need to analyze your music, promote your releases, and connect with labels and curators.",
+      "f1Title": "Smart Analytics",
+      "f1Desc": "Get deep insights into your music's performance across all major streaming platforms.",
+      "f2Title": "Curator Outreach",
+      "f2Desc": "Connect directly with curators who are looking for music like yours.",
+      "f3Title": "Release Management",
+      "f3Desc": "Plan and execute your releases with our comprehensive management tools.",
+      "f4Title": "Easy Uploads",
+      "f4Desc": "Drag and drop your tracks to get started with instant AI analysis.",
+      "f5Title": "Music Trends",
+      "f5Desc": "Stay ahead of the curve with real-time insights into emerging music trends.",
+      "f6Title": "AI Coaching",
+      "f6Desc": "Receive personalized advice from our AI music coach to improve your sound."
+    },
+    "testimonials": {
+      "title": "Loved by indie artists worldwide",
+      "subtitle": "Join thousands of artists who are using TrackTraxx to take their careers to the next level.",
+      "t1": {
+        "name": "Jane Doe",
+        "role": "Electronic Producer",
+        "content": "TrackTraxx changed the way I approach my releases. The analytics are game-changing."
+      },
+      "t2": {
+        "name": "Sam Lee",
+        "role": "Indie Artist",
+        "content": "I finally feel like I have a team behind me. The curator outreach is so easy to use."
+      },
+      "t3": {
+        "name": "Maria Rodriguez",
+        "role": "Singer/Songwriter",
+        "content": "The AI coach gave me feedback that actually made my latest track better. Highly recommend."
+      }
+    },
+    "cta": {
+      "title": "Ready to launch your next hit?",
+      "subtitle": "Join TrackTraxx today and start getting the specialized support your music deserves.",
+      "startTrial": "Start Your Free Trial",
+      "login": "Sign In"
+    }
+  },
+  "footer": {
+    "desc": "The all-in-one platform for independent artists to promote, analyze, and grow their music careers.",
+    "product": "Product",
+    "features": "Features",
+    "pricing": "Pricing",
+    "testimonials": "Testimonials",
+    "faq": "FAQ",
+    "company": "Company",
+    "about": "About Us",
+    "blog": "Blog",
+    "careers": "Careers",
+    "contact": "Contact",
+    "legal": "Legal",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "copyright": "Copyright",
+    "rights": "All rights reserved."
+  },
+  "pricing": {
+    "title": "Choose Your Plan",
+    "subtitle": "Unlock the full potential of your music with our premium features. Start free and upgrade as you grow.",
+    "monthly": "Monthly",
+    "yearly": "Yearly",
+    "save": "Save {{percent}}%",
+    "compare": "Compare Plan Features",
+    "feature": "Feature",
+    "plan_free": "Free",
+    "plan_artist": "Artist",
+    "plan_pro": "Pro",
+    "plans": {
+      "free": {
+        "name": "Free",
+        "features": [
+          "Basic AI feedback",
+          "3 track uploads per month",
+          "1 label submission per month",
+          "Limited chat with AI coach"
+        ]
+      },
+      "artist": {
+        "name": "Artist",
+        "features": [
+          "Detailed AI feedback",
+          "15 track uploads per month",
+          "5 label submissions per month",
+          "Unlimited chat with AI coach",
+          "Priority support"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "features": [
+          "Advanced AI feedback",
+          "Unlimited track uploads",
+          "15 label submissions per month",
+          "Unlimited chat with AI coach",
+          "Priority support",
+          "Exclusive industry insights",
+          "Personal growth tracking"
+        ]
+      }
+    },
+    "features": {
+      "uploads": "Track Uploads",
+      "submissions": "Label Submissions",
+      "feedback": "AI Feedback Detail Level",
+      "chat": "AI Coach Chat",
+      "support": "Priority Support",
+      "insights": "Industry Insights",
+      "growth": "Growth Tracking",
+      "values": {
+        "basic": "Basic",
+        "detailed": "Detailed",
+        "advanced": "Advanced",
+        "limited": "Limited",
+        "unlimited": "Unlimited"
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "q1": "Can I cancel my subscription?",
+      "a1": "Yes, you can cancel your subscription at any time. You'll continue to have access to your plan features until the end of your current billing period.",
+      "q2": "How do label submissions work?",
+      "a2": "When you submit a track, we match it with labels and curators in our network based on genre, quality, and commercial potential. If there's interest, we'll connect you directly.",
+      "q3": "What kind of feedback will I get?",
+      "a3": "Our AI analyzes your track and provides feedback on mixing, mastering, composition, arrangement, and more. Higher tier plans offer more detailed feedback and personalized recommendations.",
+      "q4": "Is there a free trial for premium plans?",
+      "a4": "Yes, we offer a 7-day free trial for both Artist and Pro plans. You won't be charged until the trial period ends, and you can cancel anytime."
+    },
+    "month": "month",
+    "year": "year",
+    "current_plan": "Current Plan",
+    "upgrade": "Upgrade",
+    "free_to_use": "Free to Use"
+  },
+  "checkout": {
+    "back_to_pricing": "Back to Pricing",
+    "title": "Complete your purchase",
+    "payment_method": "Payment Method",
+    "credit_card": "Credit Card",
+    "paypal": "PayPal",
+    "card_number": "Card Number",
+    "card_name": "Cardholder Name",
+    "expiry_date": "Expiry Date",
+    "cvc": "CVC",
+    "processing": "Processing...",
+    "pay": "Pay {{amount}}",
+    "secure_payment_msg": "Secure payment processed by Stripe",
+    "continue_paypal": "Continue with PayPal",
+    "order_summary": "Order Summary",
+    "total": "Total",
+    "billed_msg": "Billed {{interval}}ly. Cancel anytime.",
+    "validation_error": "Please fill in all payment details",
+    "payment_failed": "Payment failed. Please try again."
+  },
+  "promotion": {
+    "title": "Promotion",
+    "subtitle": "Submit your tracks to labels and curators",
+    "remaining": "{{count}} submissions remaining this month",
+    "howItWorks": {
+      "title": "How Promotion Works",
+      "desc": "Submit your best tracks to our network of labels, playlist curators, and industry professionals. We'll match your music with the right contacts based on genre, quality, and commercial potential. You'll be notified if there's interest in your track."
+    },
+    "upgrade": {
+      "title": "Unlock More Submissions",
+      "desc": "Upgrade to a premium plan to get more label submissions and increase your chances of being discovered.",
+      "view": "View Plans"
+    },
+    "ready": "Ready for Submission",
+    "loading": "Loading your tracks...",
+    "empty": {
+      "title": "No tracks ready for submission",
+      "desc": "You need to upload and analyze tracks before you can submit them for promotion.",
+      "dashboard": "Go to Dashboard"
+    },
+    "history": {
+      "title": "Submission History",
+      "none": "You haven't submitted any tracks yet."
+    }
+  },
+  "dashboard": {
+    "title": "Your Tracks",
+    "subtitle": "Upload tracks for AI analysis and feedback",
+    "remaining_uploads": "{{count}} uploads remaining",
+    "upload_button": "Upload Track",
+    "loading": "Loading your tracks...",
+    "free_plan": {
+      "title": "You're on the Free plan",
+      "desc": "Upgrade to get more track uploads, detailed analysis, and label submissions.",
+      "view": "View Plans"
+    },
+    "empty": {
+      "title": "No tracks yet",
+      "desc": "Get started by uploading your first track for AI analysis and personalized feedback.",
+      "button": "Upload Your First Track"
+    },
+    "track_status": {
+      "analyzing": "Analyzing...",
+      "ready": "Ready",
+      "error": "Error",
+      "unknown": "Unknown",
+      "analyzing_msg": "Analysis in progress..."
+    },
+    "track_actions": {
+      "view_analysis": "View Analysis",
+      "retry": "Retry Analysis"
+    }
+  },
+  "analysis": {
+    "title": "Track Analysis",
+    "back_to_dashboard": "Back to Dashboard",
+    "overall_score": "Overall AI Score",
+    "score_msg": "Based on professional industry standards",
+    "view_on_spotify": "View on Spotify",
+    "track_info": "Track Information",
+    "analysis_overview": "Analysis Overview",
+    "feedback": {
+      "title": "Detailed Feedback",
+      "no_feedback": "No feedback available for this track.",
+      "sections": {
+        "mixing": "Mixing & Mastering",
+        "arrangement": "Arrangement & Flow",
+        "commercial": "Commercial Potential",
+        "creativity": "Creativity & Style"
+      },
+      "strengths": "Key Strengths",
+      "improvements": "Areas for Improvement",
+      "tips": "Pro Tips"
+    },
+    "metrics": {
+      "title": "Technical Metrics",
+      "energy": "Energy",
+      "danceability": "Danceability",
+      "valence": "Positivity",
+      "tempo": "Tempo",
+      "key": "Key",
+      "loudness": "Loudness",
+      "acousticness": "Acousticness",
+      "instrumentalness": "Instrumentalness"
+    },
+    "coach": {
+      "title": "Chat with AI Coach",
+      "placeholder": "Ask your coach about this track...",
+      "loading": "Coach is thinking...",
+      "suggestions": {
+        "mixing": "How can I improve the mix?",
+        "arrangement": "What about the arrangement?",
+        "commercial": "Is this radio-ready?",
+        "genre": "What genre is this?"
+      }
+    }
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in to your account",
+      "no_account": "Don't have an account?",
+      "signup": "Sign up",
+      "email": "Email address",
+      "password": "Password",
+      "remember": "Remember me",
+      "forgot": "Forgot your password?",
+      "button": "Sign in",
+      "or_continue": "Or continue with",
+      "errors": {
+        "required": "Please enter both email and password",
+        "invalid": "Invalid email or password"
+      }
+    },
+    "signup": {
+      "title": "Create your account",
+      "has_account": "Already have an account?",
+      "login": "Sign in",
+      "artist_name": "Artist name",
+      "email": "Email address",
+      "password": "Password",
+      "terms": "By signing up, you agree to our Terms of Service and Privacy Policy",
+      "button": "Create account",
+      "errors": {
+        "required": "Please fill in all fields",
+        "invalid": "Registration failed. Please try again."
+      }
+    }
+  }
+}

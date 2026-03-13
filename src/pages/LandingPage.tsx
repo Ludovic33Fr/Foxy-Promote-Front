@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Music, Bot, Award, ArrowRight, Send, BarChart, MessageSquare, Upload } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Navbar from '../components/layout/Navbar';
 import Button from '../components/ui/Button';
+import pkg from '../../package.json';
 
 const LandingPage = () => {
+  const { t } = useTranslation();
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -20,27 +23,26 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 relative z-10">
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-              Your Personal AI Music Coach
+              {t('landing.hero.title')}
             </h1>
             <p className="text-xl text-muted-foreground mb-8">
-              Get professional feedback, improve your tracks, and connect with labels. 
-              The AI-powered platform for artists who want to grow.
+              {t('landing.hero.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link to="/signup">
                 <Button size="lg" rightIcon={<ArrowRight className="h-5 w-5" />}>
-                  Get Started for Free
+                  {t('landing.hero.startFree')}
                 </Button>
               </Link>
               <Link to="/pricing">
                 <Button size="lg" variant="outline">
-                  View Pricing
+                  {t('landing.hero.viewPricing')}
                 </Button>
               </Link>
             </div>
             
             <div className="mt-10 text-sm text-muted-foreground">
-              <p>No credit card required • Free tier available</p>
+              <p>{t('landing.hero.noCreditCard')}</p>
             </div>
           </div>
           
@@ -58,20 +60,20 @@ const LandingPage = () => {
             <div className="absolute -top-6 -left-6 bg-card p-4 rounded-lg shadow-lg border border-border max-w-xs hidden md:block">
               <div className="flex items-center">
                 <Bot className="h-5 w-5 text-primary mr-2" />
-                <p className="text-sm font-medium">AI Coach Analysis</p>
+                <p className="text-sm font-medium">{t('landing.hero.ai_coach_title')}</p>
               </div>
               <p className="text-xs text-muted-foreground mt-2">
-                "Your track has great energy but could use more dynamic range in the chorus section..."
+                {t('landing.hero.ai_coach_msg')}
               </p>
             </div>
             
             <div className="absolute -bottom-6 -right-6 bg-card p-4 rounded-lg shadow-lg border border-border max-w-xs hidden md:block">
               <div className="flex items-center">
                 <Award className="h-5 w-5 text-green-500 mr-2" />
-                <p className="text-sm font-medium">Label Interest</p>
+                <p className="text-sm font-medium">{t('landing.hero.label_interest_title')}</p>
               </div>
               <p className="text-xs text-muted-foreground mt-2">
-                "Underground Records is interested in your track 'Midnight Dreams'!"
+                {t('landing.hero.label_interest_msg')}
               </p>
             </div>
           </div>
@@ -83,10 +85,10 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-foreground mb-4">
-              AI-Powered Features to Elevate Your Music
+              {t('landing.features.title')}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Get personalized feedback, promotion opportunities, and industry insights all in one platform.
+              {t('landing.features.subtitle')}
             </p>
           </div>
           
@@ -96,9 +98,9 @@ const LandingPage = () => {
               <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4">
                 <BarChart className="h-6 w-6 text-primary" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Detailed Analysis</h3>
+              <h3 className="text-xl font-semibold mb-3">{t('landing.features.f1Title')}</h3>
               <p className="text-muted-foreground">
-                Get in-depth feedback on mixing, mastering, composition, and arrangement from our advanced AI.
+                {t('landing.features.f1Desc')}
               </p>
             </div>
             
@@ -107,9 +109,9 @@ const LandingPage = () => {
               <div className="h-12 w-12 rounded-lg bg-secondary/10 flex items-center justify-center mb-4">
                 <MessageSquare className="h-6 w-6 text-secondary" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">AI Coach Chat</h3>
+              <h3 className="text-xl font-semibold mb-3">{t('landing.features.f2Title')}</h3>
               <p className="text-muted-foreground">
-                Ask specific questions about your music and get personalized advice from your AI coach.
+                {t('landing.features.f2Desc')}
               </p>
             </div>
             
@@ -118,9 +120,9 @@ const LandingPage = () => {
               <div className="h-12 w-12 rounded-lg bg-accent/10 flex items-center justify-center mb-4">
                 <Send className="h-6 w-6 text-accent" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Label Submissions</h3>
+              <h3 className="text-xl font-semibold mb-3">{t('landing.features.f3Title')}</h3>
               <p className="text-muted-foreground">
-                Submit your best tracks to our network of labels and curators looking for new talent.
+                {t('landing.features.f3Desc')}
               </p>
             </div>
             
@@ -129,9 +131,9 @@ const LandingPage = () => {
               <div className="h-12 w-12 rounded-lg bg-green-500/10 flex items-center justify-center mb-4">
                 <Upload className="h-6 w-6 text-green-500" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Easy Uploads</h3>
+              <h3 className="text-xl font-semibold mb-3">{t('landing.features.f4Title')}</h3>
               <p className="text-muted-foreground">
-                Upload your tracks directly or share links from SoundCloud, YouTube, or other platforms.
+                {t('landing.features.f4Desc')}
               </p>
             </div>
             
@@ -140,9 +142,9 @@ const LandingPage = () => {
               <div className="h-12 w-12 rounded-lg bg-purple-500/10 flex items-center justify-center mb-4">
                 <Music className="h-6 w-6 text-purple-500" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Growth Tracking</h3>
+              <h3 className="text-xl font-semibold mb-3">{t('landing.features.f5Title')}</h3>
               <p className="text-muted-foreground">
-                Track your progress over time and see how your music evolves with each feedback loop.
+                {t('landing.features.f5Desc')}
               </p>
             </div>
             
@@ -151,9 +153,9 @@ const LandingPage = () => {
               <div className="h-12 w-12 rounded-lg bg-blue-500/10 flex items-center justify-center mb-4">
                 <Bot className="h-6 w-6 text-blue-500" />
               </div>
-              <h3 className="text-xl font-semibold mb-3">Marketing Tips</h3>
+              <h3 className="text-xl font-semibold mb-3">{t('landing.features.f6Title')}</h3>
               <p className="text-muted-foreground">
-                Get strategic advice on how to promote your music and build your audience online.
+                {t('landing.features.f6Desc')}
               </p>
             </div>
           </div>
@@ -165,10 +167,10 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-foreground mb-4">
-              What Artists Are Saying
+              {t('landing.testimonials.title')}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Join thousands of artists who are improving their music with TrackTraxx.
+              {t('landing.testimonials.subtitle')}
             </p>
           </div>
           
@@ -180,12 +182,12 @@ const LandingPage = () => {
                   JD
                 </div>
                 <div className="ml-4">
-                  <h4 className="font-semibold">Jamie Davidson</h4>
-                  <p className="text-sm text-muted-foreground">Electronic Producer</p>
+                  <h4 className="font-semibold">{t('landing.testimonials.t1.name')}</h4>
+                  <p className="text-sm text-muted-foreground">{t('landing.testimonials.t1.role')}</p>
                 </div>
               </div>
               <p className="text-muted-foreground italic">
-                "The AI coach gave me specific feedback on my EQ and arrangement that completely transformed my track. I'm getting way more playlist adds now!"
+                {t('landing.testimonials.t1.content')}
               </p>
             </div>
             
@@ -196,12 +198,12 @@ const LandingPage = () => {
                   SL
                 </div>
                 <div className="ml-4">
-                  <h4 className="font-semibold">Sarah Lee</h4>
-                  <p className="text-sm text-muted-foreground">Singer-Songwriter</p>
+                  <h4 className="font-semibold">{t('landing.testimonials.t2.name')}</h4>
+                  <p className="text-sm text-muted-foreground">{t('landing.testimonials.t2.role')}</p>
                 </div>
               </div>
               <p className="text-muted-foreground italic">
-                "I submitted my track through TrackTraxx and got signed to a label within a month. The AI feedback helped me polish it to perfection first."
+                {t('landing.testimonials.t2.content')}
               </p>
             </div>
             
@@ -212,12 +214,12 @@ const LandingPage = () => {
                   MR
                 </div>
                 <div className="ml-4">
-                  <h4 className="font-semibold">Marcus Reynolds</h4>
-                  <p className="text-sm text-muted-foreground">Hip-Hop Artist</p>
+                  <h4 className="font-semibold">{t('landing.testimonials.t3.name')}</h4>
+                  <p className="text-sm text-muted-foreground">{t('landing.testimonials.t3.role')}</p>
                 </div>
               </div>
               <p className="text-muted-foreground italic">
-                "The most valuable thing about TrackTraxx is the honesty. The AI doesn't sugarcoat - it tells you exactly what needs work, and that's helped me level up fast."
+                {t('landing.testimonials.t3.content')}
               </p>
             </div>
           </div>
@@ -228,20 +230,20 @@ const LandingPage = () => {
       <section className="py-16 bg-primary/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl font-bold text-foreground mb-4">
-            Ready to Level Up Your Music?
+            {t('landing.cta.title')}
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            Join TrackTraxx today and get professional-quality feedback on your music instantly.
+            {t('landing.cta.subtitle')}
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link to="/signup">
               <Button size="lg" rightIcon={<ArrowRight className="h-5 w-5" />}>
-                Start Free Trial
+                {t('landing.cta.startTrial')}
               </Button>
             </Link>
             <Link to="/login">
               <Button size="lg" variant="outline">
-                Log In
+                {t('landing.cta.login')}
               </Button>
             </Link>
           </div>
@@ -260,38 +262,37 @@ const LandingPage = () => {
                 </span>
               </div>
               <p className="mt-2 text-sm text-muted-foreground max-w-md">
-                TrackTraxx is an AI-powered music coaching platform helping independent 
-                artists improve their tracks and connect with industry professionals.
+                {t('footer.desc')}
               </p>
             </div>
             
             <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
               <div>
-                <h3 className="text-sm font-semibold mb-3">Product</h3>
+                <h3 className="text-sm font-semibold mb-3">{t('footer.product')}</h3>
                 <ul className="space-y-2">
-                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">Features</a></li>
-                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">Pricing</a></li>
-                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">Testimonials</a></li>
-                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">FAQ</a></li>
+                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">{t('footer.features')}</a></li>
+                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">{t('footer.pricing')}</a></li>
+                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">{t('footer.testimonials')}</a></li>
+                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">{t('footer.faq')}</a></li>
                 </ul>
               </div>
               
               <div>
-                <h3 className="text-sm font-semibold mb-3">Company</h3>
+                <h3 className="text-sm font-semibold mb-3">{t('footer.company')}</h3>
                 <ul className="space-y-2">
-                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">About</a></li>
-                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">Blog</a></li>
-                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">Careers</a></li>
-                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">Contact</a></li>
+                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">{t('footer.about')}</a></li>
+                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">{t('footer.blog')}</a></li>
+                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">{t('footer.careers')}</a></li>
+                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">{t('footer.contact')}</a></li>
                 </ul>
               </div>
               
               <div>
-                <h3 className="text-sm font-semibold mb-3">Legal</h3>
+                <h3 className="text-sm font-semibold mb-3">{t('footer.legal')}</h3>
                 <ul className="space-y-2">
-                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">Privacy</a></li>
-                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">Terms</a></li>
-                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">Copyright</a></li>
+                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">{t('footer.privacy')}</a></li>
+                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">{t('footer.terms')}</a></li>
+                  <li><a href="#" className="text-sm text-muted-foreground hover:text-foreground">{t('footer.copyright')}</a></li>
                 </ul>
               </div>
             </div>
@@ -299,7 +300,7 @@ const LandingPage = () => {
           
           <div className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center">
             <p className="text-sm text-muted-foreground">
-              &copy; {new Date().getFullYear()} TrackTraxx. All rights reserved.
+              &copy; {new Date().getFullYear()} TrackTraxx. {t('footer.rights')} • v{pkg.version}
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
               <a href="#" className="text-muted-foreground hover:text-foreground">

@@ -2,11 +2,14 @@ import { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Menu, X, Music, ChevronDown } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import Button from '../ui/Button';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const { user, logout, isAuthenticated } = useAuth();
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -46,7 +49,7 @@ const Navbar = () => {
                     ? 'border-b-2 border-primary text-foreground' 
                     : 'text-muted-foreground hover:text-foreground'}`}
               >
-                Home
+                {t('nav.home')}
               </Link>
               
               {isAuthenticated && (
@@ -58,7 +61,7 @@ const Navbar = () => {
                         ? 'border-b-2 border-primary text-foreground' 
                         : 'text-muted-foreground hover:text-foreground'}`}
                   >
-                    Dashboard
+                    {t('nav.dashboard')}
                   </Link>
                   <Link
                     to="/promotion"
@@ -67,7 +70,7 @@ const Navbar = () => {
                         ? 'border-b-2 border-primary text-foreground' 
                         : 'text-muted-foreground hover:text-foreground'}`}
                   >
-                    Promotion
+                    {t('nav.promotion')}
                   </Link>
                 </>
               )}
@@ -79,13 +82,14 @@ const Navbar = () => {
                     ? 'border-b-2 border-primary text-foreground' 
                     : 'text-muted-foreground hover:text-foreground'}`}
               >
-                Pricing
+                {t('nav.pricing')}
               </Link>
             </div>
           </div>
           
           {/* Auth Buttons - Desktop */}
-          <div className="hidden sm:ml-6 sm:flex sm:items-center">
+          <div className="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+            <LanguageSwitcher />
             {isAuthenticated ? (
               <div className="relative ml-3">
                 <div className="flex items-center">
@@ -112,13 +116,13 @@ const Navbar = () => {
                         to="/profile"
                         className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
                       >
-                        Your Profile
+                        {t('nav.profile')}
                       </Link>
                       <button
                         onClick={handleLogout}
                         className="block w-full text-left px-4 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
                       >
-                        Sign out
+                        {t('nav.logout')}
                       </button>
                     </div>
                   </div>
@@ -127,10 +131,10 @@ const Navbar = () => {
             ) : (
               <div className="flex space-x-4">
                 <Link to="/login">
-                  <Button variant="outline">Login</Button>
+                  <Button variant="outline">{t('nav.login')}</Button>
                 </Link>
                 <Link to="/signup">
-                  <Button>Sign Up</Button>
+                  <Button>{t('nav.signup')}</Button>
                 </Link>
               </div>
             )}
@@ -171,7 +175,7 @@ const Navbar = () => {
             }`}
             onClick={() => setMobileMenuOpen(false)}
           >
-            Home
+            {t('nav.home')}
           </Link>
           
           {isAuthenticated && (
@@ -185,7 +189,7 @@ const Navbar = () => {
                 }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Dashboard
+                {t('nav.dashboard')}
               </Link>
               <Link
                 to="/promotion"
@@ -196,7 +200,7 @@ const Navbar = () => {
                 }`}
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Promotion
+                {t('nav.promotion')}
               </Link>
             </>
           )}
@@ -210,7 +214,7 @@ const Navbar = () => {
             }`}
             onClick={() => setMobileMenuOpen(false)}
           >
-            Pricing
+            {t('nav.pricing')}
           </Link>
         </div>
         
@@ -240,7 +244,7 @@ const Navbar = () => {
                   className="block px-4 py-2 text-base font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  Your Profile
+                  {t('nav.profile')}
                 </Link>
                 <button
                   onClick={() => {
@@ -249,7 +253,7 @@ const Navbar = () => {
                   }}
                   className="block w-full text-left px-4 py-2 text-base font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
                 >
-                  Sign out
+                  {t('nav.logout')}
                 </button>
               </div>
             </>
@@ -260,14 +264,14 @@ const Navbar = () => {
                 className="block w-full px-4 py-2 text-center text-base font-medium rounded-md border border-border text-foreground hover:bg-muted"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Login
+                {t('nav.login')}
               </Link>
               <Link
                 to="/signup"
                 className="mt-2 block w-full px-4 py-2 text-center text-base font-medium rounded-md bg-primary text-white hover:bg-primary/90"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Sign Up
+                {t('nav.signup')}
               </Link>
             </div>
           )}
