@@ -100,8 +100,12 @@ const Navbar = () => {
                     >
                       <span className="sr-only">Open user menu</span>
                       <div className="flex items-center">
-                        <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-                          {user?.artistName?.charAt(0).toUpperCase() || "U"}
+                        <div className="w-8 h-8 rounded-full overflow-hidden bg-primary/20 flex items-center justify-center text-primary">
+                          {user?.profilePicture ? (
+                            <img src={user.profilePicture} alt={user.artistName} className="w-full h-full object-cover" />
+                          ) : (
+                            user?.artistName?.charAt(0).toUpperCase() || "U"
+                          )}
                         </div>
                         <span className="ml-2 text-sm font-medium text-foreground">
                           {user?.artistName}
@@ -224,8 +228,12 @@ const Navbar = () => {
             <>
               <div className="flex items-center px-4">
                 <div className="flex-shrink-0">
-                  <div className="h-10 w-10 rounded-full bg-primary/20 flex items-center justify-center text-primary">
-                    {user?.artistName?.charAt(0).toUpperCase() || "U"}
+                  <div className="h-10 w-10 rounded-full overflow-hidden bg-primary/20 flex items-center justify-center text-primary">
+                    {user?.profilePicture ? (
+                      <img src={user.profilePicture} alt={user.artistName} className="w-full h-full object-cover" />
+                    ) : (
+                      user?.artistName?.charAt(0).toUpperCase() || "U"
+                    )}
                   </div>
                 </div>
                 <div className="ml-3">

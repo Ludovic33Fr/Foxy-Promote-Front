@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User, Settings, CreditCard, Bell, LogOut, CheckCircle, Mail, Globe, Instagram, Music } from 'lucide-react';
+import { User, Settings, CreditCard, Bell, LogOut, CheckCircle, Globe, Instagram, Music } from 'lucide-react';
 import Navbar from '../../components/layout/Navbar';
 import Button from '../../components/ui/Button';
 import { UserProfile } from '../../types';
@@ -27,6 +27,7 @@ const ProfilePage = () => {
           id: user?.id || '',
           email: user?.email || '',
           artistName: user?.artistName || '',
+          profilePicture: user?.profilePicture,
           createdAt: user?.createdAt || new Date().toISOString(),
           onboardingCompleted: true,
           genre: 'House',
@@ -102,8 +103,12 @@ const ProfilePage = () => {
             <div className="bg-card rounded-lg border border-border overflow-hidden sticky top-8">
               <div className="p-6 border-b border-border">
                 <div className="flex flex-col items-center">
-                  <div className="h-20 w-20 rounded-full bg-primary/20 flex items-center justify-center text-primary text-xl font-semibold mb-4">
-                    {profile.artistName.charAt(0).toUpperCase()}
+                  <div className="h-20 w-20 rounded-full overflow-hidden bg-primary/20 flex items-center justify-center text-primary text-xl font-semibold mb-4">
+                    {profile.profilePicture ? (
+                      <img src={profile.profilePicture} alt={profile.artistName} className="w-full h-full object-cover" />
+                    ) : (
+                      profile.artistName.charAt(0).toUpperCase()
+                    )}
                   </div>
                   <h2 className="text-lg font-semibold">{profile.artistName}</h2>
                   <p className="text-sm text-muted-foreground">{profile.email}</p>
@@ -448,8 +453,8 @@ const ProfilePage = () => {
                           <div>
                             <h4 className="font-semibold">{currentPlan?.name} Plan</h4>
                             <p className="text-sm text-muted-foreground">
-                              {currentPlan?.price > 0 
-                                ? `$${currentPlan?.price}/${currentPlan?.interval}` 
+                              {currentPlan && currentPlan.price > 0 
+                                ? `$${currentPlan.price}/${currentPlan.interval}` 
                                 : 'Free tier'}
                             </p>
                           </div>
