@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { SubscriptionProvider } from './context/SubscriptionContext';
@@ -41,6 +42,7 @@ function App() {
             </Route>
           </Routes>
         </Router>
+        <Analytics />
       </SubscriptionProvider>
     </AuthProvider>
   );
