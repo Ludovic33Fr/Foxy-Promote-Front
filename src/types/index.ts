@@ -5,6 +5,7 @@ export interface User {
   createdAt: string;
   profilePicture?: string;
   onboardingCompleted: boolean;
+  artistId?: string;
 }
 
 export interface UserProfile extends User {
