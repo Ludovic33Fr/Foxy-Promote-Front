@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '../types';
-import { googleLogin as apiGoogleLogin, apiLogin } from '../services/api';
+import { googleLogin as apiGoogleLogin, apiLogin, fetchUserArtists } from '../services/api';
 
 interface AuthContextType {
   user: User | null;
@@ -34,6 +34,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         if (savedAuth) {
           const authData = JSON.parse(savedAuth);
           setUser(authData.user);
+          
+          // Refresh artistId if missing
+          if (authData.user?.id) {
+            try {
+              const artists = await fetchUserArtists(authData.user.id);
+              if (artists && artists.length > 0) {
+                const updatedUser = { 
+                  ...authData.user, 
+                  artistId: artists[0].id,
+                  artistName: artists[0].name || authData.user.artistName
+                };
+                setUser(updatedUser);
+                localStorage.setItem('auth', JSON.stringify({ ...authData, user: updatedUser }));
+              }
+            } catch (e) {
+              console.error("Failed to fetch artistId on startup", e);
+            }
+          }
         }
       } catch (error) {
         console.error('Authentication error:', error);
@@ -65,14 +83,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       const authData = await apiLogin(email, password);
       
-      const userData: User = {
+      let userData: User = {
         id: authData.user?.id || 'user-' + Date.now(),
         email: authData.user?.email || email,
         artistName: authData.user?.artistName || authData.user?.fullName || authData.user?.givenName || email.split('@')[0],
         profilePicture: authData.user?.pictureUrl || undefined,
         createdAt: authData.user?.insertDate || new Date().toISOString(),
-        onboardingCompleted: authData.user?.onboardingCompleted ?? true
+        onboardingCompleted: authData.user?.onboardingCompleted ?? true,
+        artistId: undefined
       };
+
+      // Fetch artist info
+      if (userData.id) {
+        try {
+          const artists = await fetchUserArtists(userData.id);
+          if (artists && artists.length > 0) {
+            userData.artistId = artists[0].id;
+            userData.artistName = artists[0].name || userData.artistName;
+          }
+        } catch (e) {
+          console.error("Failed to fetch artistId after login", e);
+        }
+      }
       
       setUser(userData);
       localStorage.setItem('auth', JSON.stringify({ user: userData, token: authData.token }));
@@ -90,14 +122,28 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const authData = await apiGoogleLogin(credential);
 
-      const userData: User = {
+      let userData: User = {
         id: authData.user?.id || 'user-' + Date.now(),
         email: authData.user?.email || 'user@foxypromote.com',
         artistName: authData.user?.fullName || authData.user?.givenName || 'User',
         profilePicture: authData.user?.pictureUrl || undefined,
         createdAt: authData.user?.insertDate || new Date().toISOString(),
-        onboardingCompleted: authData.user?.onboardingCompleted ?? true
+        onboardingCompleted: authData.user?.onboardingCompleted ?? true,
+        artistId: undefined
       };
+
+      // Fetch artist info
+      if (userData.id) {
+        try {
+          const artists = await fetchUserArtists(userData.id);
+          if (artists && artists.length > 0) {
+            userData.artistId = artists[0].id;
+            userData.artistName = artists[0].name || userData.artistName;
+          }
+        } catch (e) {
+          console.error("Failed to fetch artistId after google login", e);
+        }
+      }
       
       setUser(userData);
       localStorage.setItem('auth', JSON.stringify({ user: userData, token: authData.token }));

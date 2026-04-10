@@ -98,3 +98,17 @@ export async function apiLogin(email: string, password: string): Promise<any> {
     throw error;
   }
 }
+export async function fetchUserArtists(userId: string): Promise<any[]> {
+  const url = `${API_BASE_URL}/Artist/user/${userId}/light`;
+
+  try {
+    const response = await authenticatedFetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching user artists:', error);
+    throw error;
+  }
+}
