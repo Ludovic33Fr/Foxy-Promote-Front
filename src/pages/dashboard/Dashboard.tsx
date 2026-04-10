@@ -33,13 +33,13 @@ const Dashboard = () => {
         const mappedTracks: Track[] = data.map((item: any) => ({
           id: item.id,
           userId: user?.id || '',
-          title: item.title,
+          title: item.name,
           uploadedAt: item.insertDate || new Date().toISOString(),
           audioUrl: item.audioUrl || '',
           thumbnailUrl: item.urlPicture,
           duration: item.duration || 0,
-          status: item.isAnalyzed ? 'analyzed' : 'analyzing',
-          genre: item.genre,
+          status: 'analyzed', // If it's in this list, it should be ready for viewing
+          genre: item.style,
           bpm: item.bpm,
           key: item.key
         }));
