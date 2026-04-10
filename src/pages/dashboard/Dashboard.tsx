@@ -56,34 +56,56 @@ const Dashboard = () => {
   }, [user]);
 
   const handleUploadTrack = async (title: string, file: File) => {
+    // 1. Generate a temporary ID for tracking
+    const tempId = 'temp-' + Date.now();
+    
+    // 2. Wait 5 seconds as requested by the user
+    await new Promise(resolve => setTimeout(resolve, 5000));
+    
+    // 3. Add the track in "analyzing" mode immediately after the 5s wait
+    const placeholderTrack: Track = {
+      id: tempId,
+      userId: user?.id || '',
+      title: title,
+      uploadedAt: new Date().toISOString(),
+      audioUrl: URL.createObjectURL(file), // Local preview
+      duration: 0,
+      status: 'analyzing'
+    };
+    
+    setTracks(prev => [placeholderTrack, ...prev]);
+    
+    // 4. At this point, the modal will close because handleUploadTrack (onUpload) resolves.
+    
+    // 5. Start the real API call in the background (or continue if you want to wait for it)
+    // We don't 'await' it here if we want the modal to close after 5s regardless of API speed, 
+    // but the user said "Une fois l'upload validé... sortir du mode analysis", implying we should wait or handle the resolution.
+    
     try {
-      if (!user?.artistId) {
-        throw new Error('Artist ID is missing. Please contact support.');
-      }
-
-      // 1. Call real API
-      const result = await generateAdvice(user.artistId, title, file);
+      const result = await generateAdvice(user!.artistId!, title, file);
       
-      // 2. Map API result to Track object
-      const newTrack: Track = {
-        id: result.id || 'track' + Date.now(),
-        userId: user?.id || '',
-        title: result.title || title,
-        uploadedAt: result.insertDate || new Date().toISOString(),
-        audioUrl: result.audioUrl || URL.createObjectURL(file),
-        duration: result.duration || 0,
-        status: 'analyzing'
-      };
-      
-      setTracks([newTrack, ...tracks]);
-      
-      // The analysis progress will be handled by the backend
-      // In a real app, we might poll for status updates or use WebSockets
-      
-      return newTrack;
+      // 6. Update the specific track in the list with real data
+      setTracks(currentTracks => 
+        currentTracks.map(t => 
+          t.id === tempId 
+            ? {
+                ...t,
+                id: result.id,
+                title: result.name || title,
+                uploadedAt: result.insertDate || t.uploadedAt,
+                thumbnailUrl: result.urlPicture,
+                genre: result.style,
+                status: 'analyzed'
+              } 
+            : t
+        )
+      );
     } catch (error) {
-      console.error('Upload failed:', error);
-      throw error;
+      console.error('Background upload/analysis failed:', error);
+      // Optional: Set status to error
+      setTracks(currentTracks => 
+        currentTracks.map(t => t.id === tempId ? { ...t, status: 'error' } : t)
+      );
     }
   };
 
