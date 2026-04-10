@@ -9,6 +9,7 @@ import UploadTrackModal from '../../components/dashboard/UploadTrackModal';
 import { Track } from '../../types';
 import { useSubscription } from '../../context/SubscriptionContext';
 import { useAuth } from '../../context/AuthContext';
+import { generateAdvice, fetchArtistSongs } from '../../services/api';
 
 const Dashboard = () => {
   const { t } = useTranslation();
@@ -20,48 +21,30 @@ const Dashboard = () => {
   
   useEffect(() => {
     const fetchTracks = async () => {
+      if (!user?.artistId) {
+        setIsLoading(false);
+        return;
+      }
+
       try {
-        // Mock API call to get tracks
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        const data = await fetchArtistSongs(user.artistId);
         
-        // Demo tracks - would be from API in real app
-        const mockTracks: Track[] = [
-          {
-            id: 'track1',
-            userId: user?.id || '',
-            title: 'Summer Vibes',
-            uploadedAt: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
-            audioUrl: 'https://example.com/audio1.mp3',
-            duration: 212,
-            status: 'analyzed',
-            genre: 'House',
-            bpm: 128,
-            key: 'A min'
-          },
-          {
-            id: 'track2',
-            userId: user?.id || '',
-            title: 'Late Night',
-            uploadedAt: new Date(Date.now() - 14 * 24 * 60 * 60 * 1000).toISOString(),
-            audioUrl: 'https://example.com/audio2.mp3',
-            duration: 187,
-            status: 'analyzed',
-            genre: 'R&B',
-            bpm: 95,
-            key: 'F maj'
-          },
-          {
-            id: 'track3',
-            userId: user?.id || '',
-            title: 'First Draft',
-            uploadedAt: new Date().toISOString(),
-            audioUrl: 'https://example.com/audio3.mp3',
-            duration: 165,
-            status: 'analyzing'
-          }
-        ];
+        // Map API data to Track type
+        const mappedTracks: Track[] = data.map((item: any) => ({
+          id: item.id,
+          userId: user?.id || '',
+          title: item.title,
+          uploadedAt: item.insertDate || new Date().toISOString(),
+          audioUrl: item.audioUrl || '',
+          thumbnailUrl: item.urlPicture,
+          duration: item.duration || 0,
+          status: item.isAnalyzed ? 'analyzed' : 'analyzing',
+          genre: item.genre,
+          bpm: item.bpm,
+          key: item.key
+        }));
         
-        setTracks(mockTracks);
+        setTracks(mappedTracks);
       } catch (error) {
         console.error('Failed to fetch tracks:', error);
       } finally {
@@ -74,38 +57,28 @@ const Dashboard = () => {
 
   const handleUploadTrack = async (title: string, file: File) => {
     try {
-      // Mock upload - would be replaced with actual API call
-      await new Promise(resolve => setTimeout(resolve, 2000));
+      if (!user?.artistId) {
+        throw new Error('Artist ID is missing. Please contact support.');
+      }
+
+      // 1. Call real API
+      const result = await generateAdvice(user.artistId, title, file);
       
-      // Create new track
+      // 2. Map API result to Track object
       const newTrack: Track = {
-        id: 'track' + Date.now(),
+        id: result.id || 'track' + Date.now(),
         userId: user?.id || '',
-        title,
-        uploadedAt: new Date().toISOString(),
-        audioUrl: URL.createObjectURL(file),
-        duration: 180, // Placeholder duration
+        title: result.title || title,
+        uploadedAt: result.insertDate || new Date().toISOString(),
+        audioUrl: result.audioUrl || URL.createObjectURL(file),
+        duration: result.duration || 0,
         status: 'analyzing'
       };
       
       setTracks([newTrack, ...tracks]);
       
-      // Simulate track analysis completion after 5 seconds
-      setTimeout(() => {
-        setTracks(currentTracks => 
-          currentTracks.map(track => 
-            track.id === newTrack.id 
-              ? {
-                  ...track,
-                  status: 'analyzed',
-                  genre: 'Electronic',
-                  bpm: 120,
-                  key: 'C maj'
-                }
-              : track
-          )
-        );
-      }, 5000);
+      // The analysis progress will be handled by the backend
+      // In a real app, we might poll for status updates or use WebSockets
       
       return newTrack;
     } catch (error) {

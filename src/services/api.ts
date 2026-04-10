@@ -112,3 +112,37 @@ export async function fetchUserArtists(userId: string): Promise<any[]> {
     throw error;
   }
 }
+export async function generateAdvice(artistId: string, fileName: string, file: File): Promise<any> {
+  const url = `${API_BASE_URL}/Advice/generate`;
+
+  // We use binary upload as requested, sending the file as the body
+  const response = await authenticatedFetch(url, {
+    method: 'POST',
+    headers: {
+      'X-Artist-Id': artistId,
+      'X-File-Name': fileName,
+      'Content-Type': file.type || 'audio/mpeg'
+    },
+    body: file
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return await response.json();
+}
+export async function fetchArtistSongs(artistId: string): Promise<any[]> {
+  const url = `${API_BASE_URL}/Artist/${artistId}/songs/light`;
+
+  try {
+    const response = await authenticatedFetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching artist songs:', error);
+    throw error;
+  }
+}
