@@ -146,3 +146,18 @@ export async function fetchArtistSongs(artistId: string): Promise<any[]> {
     throw error;
   }
 }
+
+export async function fetchSong(id: string): Promise<any> {
+  const url = `${API_BASE_URL}/song/${id}`;
+
+  try {
+    const response = await authenticatedFetch(url);
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error('Error fetching song:', error);
+    throw error;
+  }
+}

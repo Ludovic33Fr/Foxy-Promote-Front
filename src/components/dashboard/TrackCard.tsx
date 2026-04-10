@@ -106,9 +106,14 @@ const TrackCard = ({ track }: TrackCardProps) => {
               </svg>
             </Link>
           ) : track.status === 'analyzing' ? (
-            <div className="flex items-center text-sm text-muted-foreground">
-              <div className="mr-2 h-4 w-4 rounded-full border-2 border-t-primary/60 border-r-primary/60 border-b-primary/10 border-l-primary/10 animate-spin"></div>
-              {t('dashboard.track_status.analyzing_msg')}
+            <div className="flex flex-col gap-2 w-full">
+              <div className="flex items-center text-sm text-primary font-medium animate-pulse">
+                <div className="mr-2 h-4 w-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
+                {t('dashboard.track_status.analyzing_msg')}
+              </div>
+              <div className="w-full bg-muted rounded-full h-1.5 overflow-hidden">
+                <div className="bg-primary h-full rounded-full animate-progress-indeterminate"></div>
+              </div>
             </div>
           ) : (
             <button className="text-primary hover:text-primary/80 font-medium text-sm">
