@@ -1,16 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Navbar from '../../components/layout/Navbar';
 import PricingCard from '../../components/pricing/PricingCard';
 import { useSubscription } from '../../context/SubscriptionContext';
+import { trackEvent } from '../../utils/analytics';
 
 const PricingPage = () => {
   const { t } = useTranslation();
   const [billingPeriod, setBillingPeriod] = useState<'month' | 'year'>('month');
   const { availablePlans } = useSubscription();
-  
-  
+
+  useEffect(() => {
+    trackEvent('pricing_page_viewed', { source: document.referrer || 'direct' });
+  }, []);
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
@@ -35,6 +39,7 @@ const PricingPage = () => {
                   : 'text-muted-foreground hover:text-foreground'
               }`}
               onClick={() => setBillingPeriod('month')}
+              data-attr="billing-toggle-monthly"
             >
               {t('pricing.monthly')}
             </button>
@@ -45,6 +50,7 @@ const PricingPage = () => {
                   : 'text-muted-foreground hover:text-foreground'
               }`}
               onClick={() => setBillingPeriod('year')}
+              data-attr="billing-toggle-yearly"
             >
               {t('pricing.yearly')} <span className="text-xs opacity-80">{t('pricing.save', { percent: 20 })}</span>
             </button>

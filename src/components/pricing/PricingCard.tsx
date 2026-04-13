@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import Button from '../ui/Button';
 import { SubscriptionPlan } from '../../types';
 import { useSubscription } from '../../context/SubscriptionContext';
+import { trackEvent } from '../../utils/analytics';
 
 interface PricingCardProps {
   plan: SubscriptionPlan;
@@ -56,7 +57,7 @@ const PricingCard = ({ plan }: PricingCardProps) => {
               {t('pricing.current_plan', { defaultValue: 'Current Plan' })}
             </Button>
           ) : (
-            <Link to={plan.price > 0 ? "/checkout" : "#"} state={{ plan }}>
+            <Link to={plan.price > 0 ? "/checkout" : "#"} state={{ plan }} onClick={() => trackEvent('plan_selected', { plan: plan.id, billing: plan.interval })}>
               <Button
                 variant={plan.price > 0 ? "primary" : "outline"}
                 fullWidth

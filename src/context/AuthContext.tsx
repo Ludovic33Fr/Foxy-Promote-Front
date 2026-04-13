@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User } from '../types';
 import { googleLogin as apiGoogleLogin, apiLogin, fetchUserArtists } from '../services/api';
+import { identifyUser, resetUser } from '../utils/analytics';
 
 interface AuthContextType {
   user: User | null;
@@ -40,8 +41,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             try {
               const artists = await fetchUserArtists(authData.user.id);
               if (artists && artists.length > 0) {
-                const updatedUser = { 
-                  ...authData.user, 
+                const updatedUser = {
+                  ...authData.user,
                   artistId: artists[0].id,
                   artistName: artists[0].name || authData.user.artistName
                 };
@@ -52,6 +53,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
               console.error("Failed to fetch artistId on startup", e);
             }
           }
+
+          // Re-identify user on session restore
+          identifyUser(
+            authData.user.id,
+            { artistName: authData.user.artistName, email: authData.user.email, onboardingCompleted: authData.user.onboardingCompleted },
+          );
         }
       } catch (error) {
         console.error('Authentication error:', error);
@@ -108,6 +115,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       setUser(userData);
       localStorage.setItem('auth', JSON.stringify({ user: userData, token: authData.token }));
+
+      identifyUser(
+        userData.id,
+        { artistName: userData.artistName, email: userData.email, onboardingCompleted: userData.onboardingCompleted },
+        { signupMethod: 'email', signupDate: userData.createdAt },
+      );
+
       return true;
     } catch (error) {
       console.error('Login error:', error);
@@ -147,6 +161,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       
       setUser(userData);
       localStorage.setItem('auth', JSON.stringify({ user: userData, token: authData.token }));
+
+      identifyUser(
+        userData.id,
+        { artistName: userData.artistName, email: userData.email, onboardingCompleted: userData.onboardingCompleted },
+        { signupMethod: 'google', signupDate: userData.createdAt },
+      );
+
       return true;
     } catch (error) {
       console.error('Google login error:', error);
@@ -186,6 +207,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       localStorage.removeItem('auth');
       setUser(null);
+      resetUser();
     } catch (error) {
       console.error('Logout error:', error);
       throw error;

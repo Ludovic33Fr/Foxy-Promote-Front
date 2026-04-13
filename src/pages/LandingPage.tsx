@@ -30,12 +30,12 @@ const LandingPage = () => {
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link to="/signup">
-                <Button size="lg" rightIcon={<ArrowRight className="h-5 w-5" />}>
+                <Button size="lg" rightIcon={<ArrowRight className="h-5 w-5" />} data-attr="cta-signup">
                   {t('landing.hero.startFree')}
                 </Button>
               </Link>
               <Link to="/pricing">
-                <Button size="lg" variant="outline">
+                <Button size="lg" variant="outline" data-attr="cta-pricing">
                   {t('landing.hero.viewPricing')}
                 </Button>
               </Link>

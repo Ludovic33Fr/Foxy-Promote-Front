@@ -2,6 +2,8 @@ import { useState, useRef } from 'react';
 import { X, Upload, Music, Info } from 'lucide-react';
 import Button from '../ui/Button';
 import { useSubscription } from '../../context/SubscriptionContext';
+import AiConsentModal, { hasAiConsent } from '../consent/AiConsentModal';
+import { trackEvent } from '../../utils/analytics';
 
 interface UploadTrackModalProps {
   isOpen: boolean;
@@ -15,6 +17,7 @@ const UploadTrackModal = ({ isOpen, onClose, onUpload }: UploadTrackModalProps) 
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [showAiConsent, setShowAiConsent] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { getRemainingUploads } = useSubscription();
 
@@ -70,22 +73,10 @@ const UploadTrackModal = ({ isOpen, onClose, onUpload }: UploadTrackModalProps) 
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!file) {
-      setError('Please select a file to upload');
-      return;
-    }
-    
-    if (!title.trim()) {
-      setError('Please enter a title for your track');
-      return;
-    }
-    
+  const doUpload = async () => {
     try {
       setIsUploading(true);
-      await onUpload(title, file);
+      await onUpload(title, file!);
       onClose();
     } catch (error) {
       console.error('Upload failed:', error);
@@ -95,9 +86,40 @@ const UploadTrackModal = ({ isOpen, onClose, onUpload }: UploadTrackModalProps) 
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!file) {
+      setError('Please select a file to upload');
+      return;
+    }
+
+    if (!title.trim()) {
+      setError('Please enter a title for your track');
+      return;
+    }
+
+    if (!hasAiConsent()) {
+      setShowAiConsent(true);
+      return;
+    }
+
+    trackEvent('track_upload_started', { attemptNumber: 1 });
+    await doUpload();
+  };
+
   if (!isOpen) return null;
 
   return (
+    <>
+    <AiConsentModal
+      isOpen={showAiConsent}
+      onAccept={() => {
+        setShowAiConsent(false);
+        doUpload();
+      }}
+      onClose={() => setShowAiConsent(false)}
+    />
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
       <div 
         className="bg-card w-full max-w-lg rounded-lg shadow-xl"
@@ -242,6 +264,7 @@ const UploadTrackModal = ({ isOpen, onClose, onUpload }: UploadTrackModalProps) 
         </form>
       </div>
     </div>
+    </>
   );
 };
 

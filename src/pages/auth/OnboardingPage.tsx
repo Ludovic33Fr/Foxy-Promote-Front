@@ -1,17 +1,23 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Music, ChevronRight, ChevronLeft } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useAuth } from '../../context/AuthContext';
+import { trackEvent } from '../../utils/analytics';
+import { sanitizeText } from '../../utils/consent';
 
 const OnboardingPage = () => {
+  const { t } = useTranslation();
   const [step, setStep] = useState(1);
   const [genre, setGenre] = useState<string>('');
   const [experience, setExperience] = useState<string>('');
   const [goals, setGoals] = useState<string[]>([]);
+  const [openQuestion, setOpenQuestion] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth();
   const navigate = useNavigate();
+  const startTimeRef = useRef(Date.now());
 
   const handleGoalToggle = (goal: string) => {
     if (goals.includes(goal)) {
@@ -22,6 +28,8 @@ const OnboardingPage = () => {
   };
 
   const handleNext = () => {
+    const stepValues: Record<number, unknown> = { 1: genre, 2: experience, 3: goals };
+    trackEvent('onboarding_step_completed', { step, value: stepValues[step] });
     setStep(step + 1);
   };
 
@@ -46,7 +54,10 @@ const OnboardingPage = () => {
         goals
       }));
       
-      navigate('/dashboard');
+      const durationSeconds = Math.round((Date.now() - startTimeRef.current) / 1000);
+      trackEvent('onboarding_step_completed', { step: 3, value: goals });
+      trackEvent('onboarding_completed', { durationSeconds, genre, experience, goalsCount: goals.length });
+      setStep(4);
     } catch (error) {
       console.error('Error completing onboarding:', error);
     } finally {
@@ -177,6 +188,42 @@ const OnboardingPage = () => {
           </div>
         );
       
+      case 4:
+        return (
+          <div className="space-y-6 text-center">
+            <h3 className="text-xl font-semibold">{t('onboarding.openQuestion.title')}</h3>
+            <p className="text-muted-foreground">
+              {t('onboarding.openQuestion.subtitle')}
+            </p>
+            <textarea
+              value={openQuestion}
+              onChange={(e) => setOpenQuestion(e.target.value.slice(0, 500))}
+              placeholder={t('onboarding.openQuestion.placeholder')}
+              maxLength={500}
+              rows={4}
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 bg-background resize-none"
+            />
+            <div className="flex justify-center gap-3">
+              <Button
+                variant="outline"
+                onClick={() => navigate('/dashboard')}
+              >
+                {t('onboarding.openQuestion.skip')}
+              </Button>
+              <Button
+                onClick={() => {
+                  if (openQuestion.trim()) {
+                    trackEvent('onboarding_open_question', { responseText: sanitizeText(openQuestion) });
+                  }
+                  navigate('/dashboard');
+                }}
+              >
+                {t('onboarding.openQuestion.start')}
+              </Button>
+            </div>
+          </div>
+        );
+
       default:
         return null;
     }
@@ -208,10 +255,11 @@ const OnboardingPage = () => {
                 <span>Genre</span>
                 <span>Experience</span>
                 <span>Goals</span>
+                <span>You</span>
               </div>
               <div className="overflow-hidden h-2 text-xs flex rounded bg-muted">
                 <div
-                  style={{ width: `${(step / 3) * 100}%` }}
+                  style={{ width: `${(step / 4) * 100}%` }}
                   className="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-primary transition-all duration-500 ease-in-out"
                 ></div>
               </div>
@@ -219,7 +267,7 @@ const OnboardingPage = () => {
             
             {renderStepContent()}
             
-            <div className="mt-8 flex justify-between">
+            {step < 4 && <div className="mt-8 flex justify-between">
               {step > 1 ? (
                 <Button
                   type="button"
@@ -255,7 +303,7 @@ const OnboardingPage = () => {
                   Complete Setup
                 </Button>
               )}
-            </div>
+            </div>}
           </div>
         </div>
       </div>

@@ -275,6 +275,62 @@
       }
     }
   },
+  "feedback": {
+    "micro": {
+      "question": "Is this analysis helpful?",
+      "placeholder": "What's missing or not relevant?",
+      "thanks": "Thanks for your feedback!"
+    }
+  },
+  "onboarding": {
+    "openQuestion": {
+      "title": "Welcome to Track-Traxx!",
+      "subtitle": "Before you start, one last question:",
+      "placeholder": "What is the biggest obstacle you face in getting your music discovered?",
+      "start": "Get Started",
+      "skip": "Skip"
+    }
+  },
+  "nps": {
+    "title": "Your feedback matters",
+    "question": "How likely are you to recommend Track-Traxx to another artist?",
+    "unlikely": "Not likely",
+    "likely": "Very likely",
+    "commentPlaceholder": "What could we improve?",
+    "submit": "Submit",
+    "thanks": "Thanks for your feedback!"
+  },
+  "consent": {
+    "banner": {
+      "title": "Your Privacy Matters",
+      "description": "We use cookies to improve your experience and analyze site usage. You can choose which categories you accept.",
+      "acceptAll": "Accept All",
+      "refuseAll": "Refuse All",
+      "customize": "Customize"
+    },
+    "panel": {
+      "title": "Cookie Settings",
+      "essential": "Essential",
+      "essentialDesc": "Required for the site to function (session, authentication).",
+      "analytics": "Analytics",
+      "analyticsDesc": "Help us understand how you use the site to improve it.",
+      "marketing": "Marketing",
+      "marketingDesc": "Allow us to provide personalized content.",
+      "confirm": "Confirm My Choices",
+      "acceptAll": "Accept All"
+    },
+    "ai": {
+      "title": "AI Processing of Your Tracks",
+      "description": "Before uploading your track, please review how it will be processed:",
+      "point1": "Your audio file will be analyzed by our AI to generate personalized feedback.",
+      "point2": "The track is securely stored for the duration of your account.",
+      "point3": "Your music is not used to train our AI models.",
+      "checkbox": "I have read and accept the track processing terms.",
+      "accept": "Accept and Continue",
+      "cancel": "Cancel"
+    },
+    "footer": "Cookie Settings"
+  },
   "auth": {
     "login": {
       "title": "Sign in to your account",

@@ -83,3 +83,9 @@ export interface UserSubscription {
   trackUploadsUsed: number;
   promotionSubmissionsUsed: number;
 }
+
+export interface ConsentState {
+  categories: ('essential' | 'analytics' | 'marketing')[];
+  timestamp: string;
+  version: string;
+}

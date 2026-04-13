@@ -8,6 +8,9 @@ import TrackCard from '../../components/dashboard/TrackCard';
 import UploadTrackModal from '../../components/dashboard/UploadTrackModal';
 import { Track } from '../../types';
 import { useSubscription } from '../../context/SubscriptionContext';
+import { trackEvent } from '../../utils/analytics';
+import { useNpsTrigger } from '../../hooks/useNpsTrigger';
+import NpsSurvey from '../../components/feedback/NpsSurvey';
 import { useAuth } from '../../context/AuthContext';
 import { generateAdvice, fetchArtistSongs } from '../../services/api';
 
@@ -18,6 +21,8 @@ const Dashboard = () => {
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
   const { user } = useAuth();
   const { getCurrentPlan, getRemainingUploads } = useSubscription();
+  const showNps = useNpsTrigger();
+  const [npsVisible, setNpsVisible] = useState(true);
   
   useEffect(() => {
     const fetchTracks = async () => {
@@ -83,11 +88,18 @@ const Dashboard = () => {
     
     try {
       const result = await generateAdvice(user!.artistId!, title, file);
-      
+
+      trackEvent('track_upload_completed', {
+        trackId: result.id,
+        fileSize: file.size,
+        title,
+        is_first_upload: tracks.length <= 1,
+      });
+
       // 6. Update the specific track in the list with real data
-      setTracks(currentTracks => 
-        currentTracks.map(t => 
-          t.id === tempId 
+      setTracks(currentTracks =>
+        currentTracks.map(t =>
+          t.id === tempId
             ? {
                 ...t,
                 id: result.id,
@@ -96,14 +108,17 @@ const Dashboard = () => {
                 thumbnailUrl: result.urlPicture,
                 genre: result.style,
                 status: 'analyzed'
-              } 
+              }
             : t
         )
       );
     } catch (error) {
       console.error('Background upload/analysis failed:', error);
+      trackEvent('track_upload_failed', {
+        errorType: error instanceof Error ? error.message : 'unknown',
+      });
       // Optional: Set status to error
-      setTracks(currentTracks => 
+      setTracks(currentTracks =>
         currentTracks.map(t => t.id === tempId ? { ...t, status: 'error' } : t)
       );
     }
@@ -131,6 +146,7 @@ const Dashboard = () => {
             <Button
               onClick={() => setIsUploadModalOpen(true)}
               leftIcon={<Plus className="h-4 w-4" />}
+              data-attr="cta-upload"
             >
               {t('dashboard.upload_button')}
             </Button>
@@ -151,8 +167,8 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="mt-4 md:mt-0 md:ml-4 self-stretch md:self-center">
-              <Link to="/pricing">
-                <Button variant="outline" size="sm">{t('dashboard.free_plan.view')}</Button>
+              <Link to="/pricing" onClick={() => trackEvent('upgrade_banner_clicked', { currentPlan: 'free' })}>
+                <Button variant="outline" size="sm" data-attr="banner-upgrade">{t('dashboard.free_plan.view')}</Button>
               </Link>
             </div>
           </div>
@@ -195,6 +211,8 @@ const Dashboard = () => {
         onClose={() => setIsUploadModalOpen(false)}
         onUpload={handleUploadTrack}
       />
+
+      {showNps && npsVisible && <NpsSurvey onClose={() => setNpsVisible(false)} />}
     </div>
   );
 };

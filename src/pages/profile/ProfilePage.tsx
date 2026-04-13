@@ -6,6 +6,7 @@ import Button from '../../components/ui/Button';
 import { UserProfile } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import { useSubscription } from '../../context/SubscriptionContext';
+import { trackEvent } from '../../utils/analytics';
 
 const ProfilePage = () => {
   const { user, logout } = useAuth();
@@ -345,7 +346,7 @@ const ProfilePage = () => {
                     </div>
                     
                     <div className="flex justify-end">
-                      <Button>
+                      <Button onClick={() => trackEvent('profile_updated', { fieldsChanged: ['profile'] })}>
                         Save Changes
                       </Button>
                     </div>

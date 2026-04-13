@@ -275,6 +275,62 @@
       }
     }
   },
+  "feedback": {
+    "micro": {
+      "question": "Cette analyse est-elle utile ?",
+      "placeholder": "Qu'est-ce qui manque ou qui n'est pas pertinent ?",
+      "thanks": "Merci pour votre retour !"
+    }
+  },
+  "onboarding": {
+    "openQuestion": {
+      "title": "Bienvenue sur Track-Traxx !",
+      "subtitle": "Avant de commencer, une dernière question :",
+      "placeholder": "Quel est le plus gros obstacle que vous rencontrez pour faire connaître votre musique ?",
+      "start": "Commencer",
+      "skip": "Passer"
+    }
+  },
+  "nps": {
+    "title": "Votre avis compte",
+    "question": "Quelle est la probabilité que vous recommandiez Track-Traxx à un autre artiste ?",
+    "unlikely": "Peu probable",
+    "likely": "Très probable",
+    "commentPlaceholder": "Que pourrions-nous améliorer ?",
+    "submit": "Envoyer",
+    "thanks": "Merci pour votre retour !"
+  },
+  "consent": {
+    "banner": {
+      "title": "Respect de votre vie privée",
+      "description": "Nous utilisons des cookies pour améliorer votre expérience et analyser l'utilisation du site. Vous pouvez choisir les catégories que vous acceptez.",
+      "acceptAll": "Tout accepter",
+      "refuseAll": "Tout refuser",
+      "customize": "Personnaliser"
+    },
+    "panel": {
+      "title": "Paramètres des cookies",
+      "essential": "Essentiels",
+      "essentialDesc": "Nécessaires au fonctionnement du site (session, authentification).",
+      "analytics": "Analytics",
+      "analyticsDesc": "Nous aident à comprendre comment vous utilisez le site pour l'améliorer.",
+      "marketing": "Marketing",
+      "marketingDesc": "Permettent de vous proposer du contenu personnalisé.",
+      "confirm": "Confirmer mes choix",
+      "acceptAll": "Tout accepter"
+    },
+    "ai": {
+      "title": "Traitement IA de vos morceaux",
+      "description": "Avant d'uploader votre morceau, veuillez prendre connaissance de la manière dont il sera traité :",
+      "point1": "Votre fichier audio sera analysé par notre IA pour générer un feedback personnalisé.",
+      "point2": "Le morceau est stocké de manière sécurisée pendant la durée de votre compte.",
+      "point3": "Votre musique n'est pas utilisée pour entraîner nos modèles d'IA.",
+      "checkbox": "J'ai lu et j'accepte les conditions de traitement de mes morceaux.",
+      "accept": "Accepter et continuer",
+      "cancel": "Annuler"
+    },
+    "footer": "Paramètres cookies"
+  },
   "auth": {
     "login": {
       "title": "Connectez-vous à votre compte",

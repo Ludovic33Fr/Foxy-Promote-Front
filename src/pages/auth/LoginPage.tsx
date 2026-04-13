@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import Button from '../../components/ui/Button';
 import { useAuth } from '../../context/AuthContext';
+import { trackEvent } from '../../utils/analytics';
 
 const LoginPage = () => {
   const { t } = useTranslation();
@@ -23,6 +24,7 @@ const LoginPage = () => {
 
   const handleGoogleSuccess = async (credentialResponse: any) => {
     setError(null);
+    trackEvent('login_started', { method: 'google' });
     if (credentialResponse.credential) {
       const success = await loginWithGoogle(credentialResponse.credential);
       if (success) {
@@ -48,6 +50,7 @@ const LoginPage = () => {
     try {
       setIsLoading(true);
       setError(null);
+      trackEvent('login_started', { method: 'email' });
       const success = await login(email, password);
       if (success) {
         navigate(from, { replace: true });

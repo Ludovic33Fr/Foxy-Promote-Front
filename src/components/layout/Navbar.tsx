@@ -56,18 +56,20 @@ const Navbar = () => {
                 <>
                   <Link
                     to="/dashboard"
-                    className={`inline-flex items-center px-1 pt-1 text-sm font-medium 
-                      ${isActive('/dashboard') 
-                        ? 'border-b-2 border-primary text-foreground' 
+                    data-attr="nav-dashboard"
+                    className={`inline-flex items-center px-1 pt-1 text-sm font-medium
+                      ${isActive('/dashboard')
+                        ? 'border-b-2 border-primary text-foreground'
                         : 'text-muted-foreground hover:text-foreground'}`}
                   >
                     {t('nav.dashboard')}
                   </Link>
                   <Link
                     to="/promotion"
-                    className={`inline-flex items-center px-1 pt-1 text-sm font-medium 
-                      ${isActive('/promotion') 
-                        ? 'border-b-2 border-primary text-foreground' 
+                    data-attr="nav-promotion"
+                    className={`inline-flex items-center px-1 pt-1 text-sm font-medium
+                      ${isActive('/promotion')
+                        ? 'border-b-2 border-primary text-foreground'
                         : 'text-muted-foreground hover:text-foreground'}`}
                   >
                     {t('nav.promotion')}
@@ -77,9 +79,10 @@ const Navbar = () => {
               
               <Link
                 to="/pricing"
-                className={`inline-flex items-center px-1 pt-1 text-sm font-medium 
-                  ${isActive('/pricing') 
-                    ? 'border-b-2 border-primary text-foreground' 
+                data-attr="nav-pricing"
+                className={`inline-flex items-center px-1 pt-1 text-sm font-medium
+                  ${isActive('/pricing')
+                    ? 'border-b-2 border-primary text-foreground'
                     : 'text-muted-foreground hover:text-foreground'}`}
               >
                 {t('nav.pricing')}
@@ -118,12 +121,14 @@ const Navbar = () => {
                     <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-background ring-1 ring-black ring-opacity-5 py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
                       <Link
                         to="/profile"
+                        data-attr="nav-profile"
                         className="block px-4 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
                       >
                         {t('nav.profile')}
                       </Link>
                       <button
                         onClick={handleLogout}
+                        data-attr="nav-logout"
                         className="block w-full text-left px-4 py-2 text-sm text-muted-foreground hover:bg-muted hover:text-foreground"
                       >
                         {t('nav.logout')}
@@ -186,6 +191,7 @@ const Navbar = () => {
             <>
               <Link
                 to="/dashboard"
+                data-attr="nav-dashboard"
                 className={`block pl-3 pr-4 py-2 text-base font-medium ${
                   isActive('/dashboard')
                     ? 'bg-primary/10 border-l-4 border-primary text-primary'
@@ -197,6 +203,7 @@ const Navbar = () => {
               </Link>
               <Link
                 to="/promotion"
+                data-attr="nav-promotion"
                 className={`block pl-3 pr-4 py-2 text-base font-medium ${
                   isActive('/promotion')
                     ? 'bg-primary/10 border-l-4 border-primary text-primary'
@@ -211,6 +218,7 @@ const Navbar = () => {
           
           <Link
             to="/pricing"
+            data-attr="nav-pricing"
             className={`block pl-3 pr-4 py-2 text-base font-medium ${
               isActive('/pricing')
                 ? 'bg-primary/10 border-l-4 border-primary text-primary'
@@ -249,6 +257,7 @@ const Navbar = () => {
               <div className="mt-3 space-y-1">
                 <Link
                   to="/profile"
+                  data-attr="nav-profile"
                   className="block px-4 py-2 text-base font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
                   onClick={() => setMobileMenuOpen(false)}
                 >
@@ -259,6 +268,7 @@ const Navbar = () => {
                     handleLogout();
                     setMobileMenuOpen(false);
                   }}
+                  data-attr="nav-logout"
                   className="block w-full text-left px-4 py-2 text-base font-medium text-muted-foreground hover:bg-muted hover:text-foreground"
                 >
                   {t('nav.logout')}

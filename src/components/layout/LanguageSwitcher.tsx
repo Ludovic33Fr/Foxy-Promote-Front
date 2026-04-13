@@ -1,10 +1,12 @@
 import { useTranslation } from 'react-i18next';
 import { Globe } from 'lucide-react';
+import { trackEvent } from '../../utils/analytics';
 
 const LanguageSwitcher = () => {
   const { i18n } = useTranslation();
 
   const changeLanguage = (lng: string) => {
+    trackEvent('language_switched', { fromLang: i18n.resolvedLanguage, toLang: lng });
     i18n.changeLanguage(lng);
   };
 

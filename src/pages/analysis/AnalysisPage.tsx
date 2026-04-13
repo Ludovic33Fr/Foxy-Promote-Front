@@ -10,8 +10,11 @@ import { useTranslation } from 'react-i18next';
 import Navbar from '../../components/layout/Navbar';
 import Button from '../../components/ui/Button';
 import ChatInterface from '../../components/analysis/ChatInterface';
+import AnalysisMicroFeedback from '../../components/analysis/AnalysisMicroFeedback';
 import { fetchSong } from '../../services/api';
 import { ChatMessage } from '../../types';
+import { trackEvent } from '../../utils/analytics';
+import { recordFirstAnalysis } from '../../hooks/useNpsTrigger';
 
 const AnalysisPage = () => {
   const { t } = useTranslation();
@@ -29,7 +32,12 @@ const AnalysisPage = () => {
         setIsLoading(true);
         const data = await fetchSong(trackId);
         setSong(data);
-        
+        trackEvent('analysis_viewed', {
+          trackId,
+          score: data.advice?.strategicEvaluation?.globalScore,
+        });
+        recordFirstAnalysis();
+
         // Initial AI message
         const initialMsg: ChatMessage = {
           id: 'initial',
@@ -49,6 +57,7 @@ const AnalysisPage = () => {
   }, [trackId]);
 
   const handleSendMessage = async (content: string) => {
+    trackEvent('chat_message_sent', { trackId, messageLength: content.length });
     const userMessage: ChatMessage = {
       id: `msg-${Date.now()}-user`,
       sender: 'user',
@@ -189,8 +198,8 @@ const AnalysisPage = () => {
               </div>
 
               <div className="flex gap-4">
-                 <Button leftIcon={<Share2 className="h-4 w-4" />}>Partager</Button>
-                 <Button variant="outline" leftIcon={<Youtube className="h-4 w-4" />}>Video Preview</Button>
+                 <Button leftIcon={<Share2 className="h-4 w-4" />} data-attr="btn-share">Partager</Button>
+                 <Button variant="outline" leftIcon={<Youtube className="h-4 w-4" />} data-attr="btn-video-preview">Video Preview</Button>
               </div>
             </div>
           </div>
@@ -243,6 +252,7 @@ const AnalysisPage = () => {
                    </div>
                  </div>
               </div>
+              <AnalysisMicroFeedback section="musical" trackId={trackId || ''} />
             </section>
 
             {/* Section 2: Évaluation Stratégique */}
@@ -309,6 +319,7 @@ const AnalysisPage = () => {
                     </div>
                  </div>
               </div>
+              <AnalysisMicroFeedback section="strategic" trackId={trackId || ''} />
             </section>
 
             {/* Section 3: TikTok Potential */}
@@ -359,6 +370,7 @@ const AnalysisPage = () => {
                    </div>
                  </div>
               </div>
+              <AnalysisMicroFeedback section="tiktok" trackId={trackId || ''} />
             </section>
 
           </div>

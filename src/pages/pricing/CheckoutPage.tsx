@@ -6,6 +6,7 @@ import Navbar from '../../components/layout/Navbar';
 import Button from '../../components/ui/Button';
 import { SubscriptionPlan } from '../../types';
 import { useSubscription } from '../../context/SubscriptionContext';
+import { trackEvent } from '../../utils/analytics';
 
 const CheckoutPage = () => {
   const location = useLocation();
@@ -26,6 +27,12 @@ const CheckoutPage = () => {
     navigate('/pricing');
     return null;
   }
+
+  // Track checkout started on mount (will fire once due to early return above)
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useState(() => {
+    trackEvent('checkout_started', { plan: plan.id, amount: plan.price });
+  });
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +51,9 @@ const CheckoutPage = () => {
       
       // Upgrade subscription
       await upgradeSubscription(plan.id);
-      
+
+      trackEvent('checkout_completed', { plan: plan.id, amount: plan.price, paymentMethod });
+
       // Redirect to dashboard
       navigate('/dashboard');
     } catch (error) {
@@ -166,6 +175,7 @@ const CheckoutPage = () => {
                         placeholder="1234 5678 9012 3456"
                         maxLength={19}
                         className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 bg-background"
+                        data-ph-no-capture
                         required
                       />
                     </div>
@@ -181,6 +191,7 @@ const CheckoutPage = () => {
                         onChange={(e) => setCardName(e.target.value)}
                         placeholder="John Doe"
                         className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 bg-background"
+                        data-ph-no-capture
                         required
                       />
                     </div>
@@ -213,6 +224,7 @@ const CheckoutPage = () => {
                           onChange={(e) => setCvc(e.target.value.replace(/\D/g, ''))}
                           placeholder="123"
                           maxLength={3}
+                          data-ph-no-capture
                           className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50 bg-background"
                           required
                         />

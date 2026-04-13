@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import Button from '../../components/ui/Button';
 import { useAuth } from '../../context/AuthContext';
+import { trackEvent } from '../../utils/analytics';
 
 const SignupPage = () => {
   const { t } = useTranslation();
@@ -20,6 +21,7 @@ const SignupPage = () => {
 
   const handleGoogleSuccess = async (credentialResponse: any) => {
     setErrors({});
+    trackEvent('signup_started', { method: 'google' });
     if (credentialResponse.credential) {
       const success = await loginWithGoogle(credentialResponse.credential);
       if (success) {
@@ -64,7 +66,9 @@ const SignupPage = () => {
     
     try {
       setIsLoading(true);
+      trackEvent('signup_started', { method: 'email' });
       await signup(email, password, artistName);
+      trackEvent('signup_completed', { method: 'email' });
       navigate('/onboarding');
     } catch (error) {
       console.error('Signup error:', error);
