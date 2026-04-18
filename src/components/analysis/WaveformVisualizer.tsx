@@ -18,9 +18,12 @@ interface WaveformVisualizerProps {
 
 function timeToSeconds(time: string): number {
   if (!time) return 0;
-  const parts = time.split(':').map(Number);
-  if (parts.length === 2) return parts[0] * 60 + parts[1];
-  return parts[0] || 0;
+  const digits = time.match(/\d+/g);
+  if (!digits || digits.length === 0) return 0;
+  if (digits.length >= 2) {
+    return parseInt(digits[0], 10) * 60 + parseInt(digits[1], 10);
+  }
+  return parseInt(digits[0], 10);
 }
 
 const WaveformVisualizer = ({ structure, totalDuration, trackId }: WaveformVisualizerProps) => {
