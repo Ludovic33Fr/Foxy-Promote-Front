@@ -1,6 +1,8 @@
 import { useMemo, useRef, useState, useEffect } from 'react';
 import { usePlayer } from '../../context/PlayerContext';
-import { Music, Layout, MapPin } from 'lucide-react';
+import { Music, Layout, MapPin, Loader2 } from 'lucide-react';
+import { useAudioWaveform } from '../../hooks/useAudioWaveform';
+import { getAudioStreamUrl } from '../../services/api';
 
 interface StructurePoint {
   timecode: string;
@@ -11,6 +13,7 @@ interface StructurePoint {
 interface WaveformVisualizerProps {
   structure: StructurePoint[];
   totalDuration: string; // "3:45" format
+  trackId?: string;
 }
 
 function timeToSeconds(time: string): number {
@@ -20,27 +23,34 @@ function timeToSeconds(time: string): number {
   return parts[0] || 0;
 }
 
-const WaveformVisualizer = ({ structure, totalDuration }: WaveformVisualizerProps) => {
+const WaveformVisualizer = ({ structure, totalDuration, trackId }: WaveformVisualizerProps) => {
   const { currentTime, duration, isPlaying, seek, currentTrack } = usePlayer();
   const containerRef = useRef<HTMLDivElement>(null);
   const [hoverTime, setHoverTime] = useState<number | null>(null);
 
-  const totalSecs = timeToSeconds(totalDuration) || duration || 1;
-  const currentProgress = (currentTime / totalSecs) * 100;
+  const audioUrl = useMemo(() => trackId ? getAudioStreamUrl(trackId) : undefined, [trackId]);
+  const { peaks, duration: audioDuration, isLoading: peaksLoading } = useAudioWaveform(audioUrl);
 
-  // Generate a deterministic but unique-looking waveform based on the track name or structure
-  const bars = useMemo(() => {
+  const isPlayingCurrent = currentTrack?.id === trackId;
+  const realDuration = audioDuration || (isPlayingCurrent ? duration : 0);
+  const totalSecs = realDuration || timeToSeconds(totalDuration) || 1;
+  const currentProgress = isPlayingCurrent ? (currentTime / totalSecs) * 100 : 0;
+  const displayTime = isPlayingCurrent ? currentTime : 0;
+
+  // Fallback bars generation if real peaks are not available
+  const fallbackBars = useMemo(() => {
     const seed = structure.length > 0 ? structure[0].name.length : 10;
     const barCount = 100;
     const result = [];
     for (let i = 0; i < barCount; i++) {
-      // Use sine waves + random noise for an aesthetic look
       const baseHeight = Math.sin(i * 0.2) * 20 + 40;
       const noise = Math.abs(Math.sin(i * seed * 0.5)) * 30;
       result.push(Math.max(10, Math.min(100, baseHeight + noise)));
     }
     return result;
   }, [structure]);
+
+  const bars = peaks.length > 0 ? peaks : fallbackBars;
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
@@ -71,7 +81,7 @@ const WaveformVisualizer = ({ structure, totalDuration }: WaveformVisualizerProp
           <Layout className="h-4 w-4" /> Spectrogramme & Structure
         </h3>
         <div className="text-xs font-mono text-muted-foreground bg-muted/30 px-2 py-0.5 rounded-full border border-border">
-          {formatTime(currentTime)} / {formatTime(totalSecs)}
+          {formatTime(displayTime)} / {formatTime(totalSecs)}
         </div>
       </div>
 
@@ -84,6 +94,11 @@ const WaveformVisualizer = ({ structure, totalDuration }: WaveformVisualizerProp
       >
         {/* The Waveform - Animated and Interactive */}
         <div className="absolute inset-x-6 bottom-6 top-6 flex items-end gap-[2px]">
+          {peaksLoading ? (
+            <div className="absolute inset-0 flex items-center justify-center opacity-40">
+              <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            </div>
+          ) : null}
           {bars.map((height, i) => {
             const barProgress = (i / bars.length) * 100;
             const isActive = barProgress <= currentProgress;
@@ -92,7 +107,7 @@ const WaveformVisualizer = ({ structure, totalDuration }: WaveformVisualizerProp
             return (
               <div 
                 key={i}
-                className="flex-1 rounded-t-sm transition-all duration-300"
+                className={`flex-1 rounded-t-sm transition-all duration-300 ${peaksLoading ? 'opacity-20 animate-pulse' : ''}`}
                 style={{ 
                   height: `${height}%`,
                   backgroundColor: isActive 
@@ -113,7 +128,7 @@ const WaveformVisualizer = ({ structure, totalDuration }: WaveformVisualizerProp
             const position = (pointSecs / totalSecs) * 100;
             if (position > 100) return null;
 
-            const isPassed = pointSecs <= currentTime;
+            const isPassed = isPlayingCurrent && pointSecs <= currentTime;
 
             return (
               <div 

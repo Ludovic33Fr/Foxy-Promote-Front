@@ -251,6 +251,7 @@ const AnalysisPage = () => {
            <WaveformVisualizer 
               structure={analysis.structure || []} 
               totalDuration={analysis.technicalCharacteristics.totalDuration || '0:00'} 
+              trackId={trackId}
            />
         </section>
 
