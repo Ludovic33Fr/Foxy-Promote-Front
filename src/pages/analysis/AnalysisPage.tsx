@@ -12,6 +12,7 @@ import Navbar from '../../components/layout/Navbar';
 import Button from '../../components/ui/Button';
 import ChatInterface from '../../components/analysis/ChatInterface';
 import AnalysisMicroFeedback from '../../components/analysis/AnalysisMicroFeedback';
+import WaveformVisualizer from '../../components/analysis/WaveformVisualizer';
 import { fetchSong, getAudioStreamUrl } from '../../services/api';
 import { ChatMessage } from '../../types';
 import { trackEvent } from '../../utils/analytics';
@@ -244,6 +245,14 @@ const AnalysisPage = () => {
             </div>
           </div>
         </div>
+
+        {/* Spectral Waveform & Narrative Structure */}
+        <section className="mb-12">
+           <WaveformVisualizer 
+              structure={analysis.structure || []} 
+              totalDuration={analysis.technicalCharacteristics.totalDuration || '0:00'} 
+           />
+        </section>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           <div className="lg:col-span-8 space-y-12">

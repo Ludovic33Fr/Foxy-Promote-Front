@@ -1,7 +1,9 @@
-import { PlayCircle, Clock, Music, BarChart } from 'lucide-react';
+import { PlayCircle, PauseCircle, Clock, Music, BarChart } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Track } from '../../types';
+import { usePlayer } from '../../context/PlayerContext';
+import { getAudioStreamUrl } from '../../services/api';
 
 interface TrackCardProps {
   track: Track;
@@ -9,6 +11,30 @@ interface TrackCardProps {
 
 const TrackCard = ({ track }: TrackCardProps) => {
   const { t } = useTranslation();
+  const { playTrack, currentTrack, isPlaying: playerIsPlaying, togglePlay } = usePlayer();
+  
+  const isCurrentTrack = currentTrack?.id === track.id;
+  const isPlaying = isCurrentTrack && playerIsPlaying;
+
+  const handlePlay = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    if (isCurrentTrack) {
+      togglePlay();
+      return;
+    }
+
+    if (!track.filePath && !track.urlSoundCloud) return;
+
+    playTrack({
+      id: track.id,
+      name: track.title,
+      coverUrl: track.thumbnailUrl,
+      filePath: track.filePath ? getAudioStreamUrl(track.id) : undefined,
+      urlSoundCloud: track.urlSoundCloud,
+    });
+  };
   
   const formatDuration = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);
@@ -52,9 +78,16 @@ const TrackCard = ({ track }: TrackCardProps) => {
           alt={track.title} 
           className="w-full h-40 object-cover"
         />
-        <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-          <PlayCircle className="h-12 w-12 text-white" />
-        </div>
+        <button 
+          onClick={handlePlay}
+          className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10"
+        >
+          {isPlaying ? (
+            <PauseCircle className="h-12 w-12 text-white fill-white/20" />
+          ) : (
+            <PlayCircle className="h-12 w-12 text-white fill-white/20" />
+          )}
+        </button>
         
         <div className="absolute bottom-2 right-2">
           <div className={`text-xs font-medium px-2 py-1 rounded-full ${getStatusColor(track.status)}`}>
