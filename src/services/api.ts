@@ -161,3 +161,17 @@ export async function fetchSong(id: string): Promise<any> {
     throw error;
   }
 }
+
+export function getAudioStreamUrl(songId: string): string {
+  if (!songId) return '';
+  const authDataRaw = localStorage.getItem('auth');
+  let token = '';
+  if (authDataRaw) {
+    try {
+      const authData = JSON.parse(authDataRaw);
+      token = authData.token || '';
+    } catch (e) {}
+  }
+  
+  return `${API_BASE_URL}/Song/${songId}/audio${token ? `?token=${encodeURIComponent(token)}` : ''}`;
+}

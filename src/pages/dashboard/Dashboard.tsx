@@ -46,7 +46,9 @@ const Dashboard = () => {
           status: 'analyzed', // If it's in this list, it should be ready for viewing
           genre: item.style,
           bpm: item.bpm,
-          key: item.key
+          key: item.key,
+          filePath: item.filePath,
+          urlSoundCloud: item.urlSoundCloud
         }));
         
         setTracks(mappedTracks);

@@ -12,7 +12,7 @@ import Navbar from '../../components/layout/Navbar';
 import Button from '../../components/ui/Button';
 import ChatInterface from '../../components/analysis/ChatInterface';
 import AnalysisMicroFeedback from '../../components/analysis/AnalysisMicroFeedback';
-import { fetchSong } from '../../services/api';
+import { fetchSong, getAudioStreamUrl } from '../../services/api';
 import { ChatMessage } from '../../types';
 import { trackEvent } from '../../utils/analytics';
 import { recordFirstAnalysis } from '../../hooks/useNpsTrigger';
@@ -49,7 +49,7 @@ const AnalysisPage = () => {
       id: song.id || trackId || '',
       name: song.name,
       coverUrl: song.urlPicture,
-      filePath: song.filePath || undefined,
+      filePath: song.filePath ? getAudioStreamUrl(song.id || trackId || '') : undefined,
       urlSoundCloud: song.urlSoundCloud || undefined,
     });
   };
