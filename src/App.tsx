@@ -3,8 +3,10 @@ import { Analytics } from '@vercel/analytics/react';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { SubscriptionProvider } from './context/SubscriptionContext';
+import { PlayerProvider } from './context/PlayerContext';
 import ConsentBanner from './components/consent/ConsentBanner';
 import { usePageView } from './hooks/usePageView';
+import StickyPlayer from './components/ui/StickyPlayer';
 
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import LandingPage from './pages/LandingPage';
@@ -43,6 +45,7 @@ function AppContent() {
           <Route path="/submit" element={<SubmitSongPage />} />
         </Route>
       </Routes>
+      <StickyPlayer />
     </>
   );
 }
@@ -51,11 +54,13 @@ function App() {
   return (
     <AuthProvider>
       <SubscriptionProvider>
-        <ConsentBanner />
-        <Router>
-          <AppContent />
-        </Router>
-        <Analytics />
+        <PlayerProvider>
+          <ConsentBanner />
+          <Router>
+            <AppContent />
+          </Router>
+          <Analytics />
+        </PlayerProvider>
       </SubscriptionProvider>
     </AuthProvider>
   );

@@ -4,7 +4,8 @@ import {
   ArrowLeft, Play, Pause, Clock, Music, BarChart, 
   Share2, Zap, TrendingUp, Target, ListMusic, 
   CheckCircle2, AlertCircle, Lightbulb, Youtube,
-  Compass, Layout, ExternalLink, MessageSquare
+  Compass, Layout, ExternalLink, MessageSquare,
+  Headphones
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Navbar from '../../components/layout/Navbar';
@@ -15,15 +16,45 @@ import { fetchSong } from '../../services/api';
 import { ChatMessage } from '../../types';
 import { trackEvent } from '../../utils/analytics';
 import { recordFirstAnalysis } from '../../hooks/useNpsTrigger';
+import { usePlayer } from '../../context/PlayerContext';
 
 const AnalysisPage = () => {
   const { t } = useTranslation();
   const { trackId } = useParams<{ trackId: string }>();
   const [song, setSong] = useState<any>(null);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isAiTyping, setIsAiTyping] = useState(false);
+  const { playTrack, currentTrack, isPlaying: playerIsPlaying, togglePlay } = usePlayer();
+
+  const isCurrentTrack = currentTrack?.id === trackId;
+  const isPlaying = isCurrentTrack && playerIsPlaying;
+
+  const handlePlayTrack = () => {
+    if (!song) return;
+    
+    // If it's already the current track, just toggle play/pause
+    if (isCurrentTrack) {
+      togglePlay();
+      return;
+    }
+
+    // Determine audio source — prefer FilePath, fallback to SoundCloud
+    const hasFilePath = !!song.filePath;
+    const hasSoundCloud = !!song.urlSoundCloud;
+
+    if (!hasFilePath && !hasSoundCloud) return;
+
+    playTrack({
+      id: song.id || trackId || '',
+      name: song.name,
+      coverUrl: song.urlPicture,
+      filePath: song.filePath || undefined,
+      urlSoundCloud: song.urlSoundCloud || undefined,
+    });
+  };
+
+  const canPlay = song && (song.filePath || song.urlSoundCloud);
   
   useEffect(() => {
     const fetchData = async () => {
@@ -127,7 +158,7 @@ const AnalysisPage = () => {
   const positioning = advice.artistPositioning;
 
   return (
-    <div className="min-h-screen bg-background pb-20">
+    <div className="min-h-screen bg-background pb-28">
       <Navbar />
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
@@ -148,10 +179,11 @@ const AnalysisPage = () => {
                 alt={song.name} 
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+              <div className={`absolute inset-0 bg-black/30 flex items-center justify-center transition-opacity ${canPlay ? 'opacity-0 group-hover:opacity-100 cursor-pointer' : 'opacity-0 pointer-events-none'}`}>
                 <button 
-                  onClick={() => setIsPlaying(!isPlaying)}
-                  className="bg-white/20 backdrop-blur-md rounded-full p-6 text-white hover:scale-110 transition-transform shadow-2xl"
+                  onClick={handlePlayTrack}
+                  disabled={!canPlay}
+                  className="bg-white/20 backdrop-blur-md rounded-full p-6 text-white hover:scale-110 transition-transform shadow-2xl disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isPlaying ? <Pause className="h-10 w-10 fill-current" /> : <Play className="h-10 w-10 fill-current ml-1" />}
                 </button>
@@ -197,7 +229,15 @@ const AnalysisPage = () => {
                 </div>
               </div>
 
-              <div className="flex gap-4">
+              <div className="flex gap-4 flex-wrap">
+                 {canPlay && (
+                   <Button 
+                     leftIcon={isPlaying ? <Pause className="h-4 w-4" /> : <Headphones className="h-4 w-4" />}
+                     onClick={handlePlayTrack}
+                   >
+                     {isPlaying ? 'Pause' : 'Écouter'}
+                   </Button>
+                 )}
                  <Button leftIcon={<Share2 className="h-4 w-4" />} data-attr="btn-share">Partager</Button>
                  <Button variant="outline" leftIcon={<Youtube className="h-4 w-4" />} data-attr="btn-video-preview">Video Preview</Button>
               </div>
