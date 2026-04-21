@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowLeft, CreditCard, Check, Shield } from 'lucide-react';
@@ -6,33 +6,52 @@ import Navbar from '../../components/layout/Navbar';
 import Button from '../../components/ui/Button';
 import { SubscriptionPlan } from '../../types';
 import { useSubscription } from '../../context/SubscriptionContext';
-import { trackEvent } from '../../utils/analytics';
+import { track } from '../../utils/analytics';
+
+const toBilling = (interval: 'month' | 'year'): 'monthly' | 'yearly' =>
+  interval === 'year' ? 'yearly' : 'monthly';
+
+const toPaidPlan = (id: string): 'artist' | 'pro' | null =>
+  id === 'artist' || id === 'pro' ? id : null;
 
 const CheckoutPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const plan = location.state?.plan as SubscriptionPlan;
-  const { upgradeSubscription } = useSubscription();
-  
+  const { upgradeSubscription, getCurrentPlan } = useSubscription();
+
   const [paymentMethod, setPaymentMethod] = useState<'card' | 'paypal'>('card');
   const [cardNumber, setCardNumber] = useState('');
   const [cardName, setCardName] = useState('');
   const [expiryDate, setExpiryDate] = useState('');
   const [cvc, setCvc] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
-  
+  const completedRef = useRef(false);
+  const stepReachedRef = useRef<'plan_select' | 'payment_info' | 'confirmation'>('plan_select');
+
+  // Track "checkout_started" once when the plan is available, and handle abandonment on unmount.
+  useEffect(() => {
+    if (!plan) return;
+    const paidPlan = toPaidPlan(plan.id);
+    if (!paidPlan) return;
+    const billing = toBilling(plan.interval);
+    track('checkout_started', { plan: paidPlan, billing, amount_eur: plan.price });
+    stepReachedRef.current = 'payment_info';
+    return () => {
+      if (completedRef.current) return;
+      track('checkout_abandoned', {
+        plan: paidPlan,
+        billing,
+        step_reached: stepReachedRef.current,
+      });
+    };
+  }, [plan]);
+
   if (!plan) {
-    // Redirect to pricing page if no plan was selected
     navigate('/pricing');
     return null;
   }
-
-  // Track checkout started on mount (will fire once due to early return above)
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useState(() => {
-    trackEvent('checkout_started', { plan: plan.id, amount: plan.price });
-  });
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,14 +64,27 @@ const CheckoutPage = () => {
     
     try {
       setIsProcessing(true);
-      
+      stepReachedRef.current = 'confirmation';
+
       // Process payment (mock)
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
+      const paidPlan = toPaidPlan(plan.id);
+      const wasFree = getCurrentPlan()?.id === 'free';
+
       // Upgrade subscription
       await upgradeSubscription(plan.id);
 
-      trackEvent('checkout_completed', { plan: plan.id, amount: plan.price, paymentMethod });
+      if (paidPlan) {
+        completedRef.current = true;
+        track('checkout_completed', {
+          plan: paidPlan,
+          billing: toBilling(plan.interval),
+          amount_eur: plan.price,
+          payment_method: paymentMethod,
+          is_first_paid_conversion: wasFree,
+        });
+      }
 
       // Redirect to dashboard
       navigate('/dashboard');

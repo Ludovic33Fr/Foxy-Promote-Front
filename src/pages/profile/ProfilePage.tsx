@@ -6,7 +6,45 @@ import Button from '../../components/ui/Button';
 import { UserProfile } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import { useSubscription } from '../../context/SubscriptionContext';
-import { trackEvent } from '../../utils/analytics';
+import { track } from '../../utils/analytics';
+
+const COMPLETENESS_FIELDS: (keyof UserProfile | string)[] = [
+  'artistName',
+  'genre',
+  'experience',
+  'goals',
+  'profilePicture',
+  'socialLinks.instagram',
+  'socialLinks.soundcloud',
+  'socialLinks.spotify',
+];
+
+function computeCompleteness(profile: UserProfile | null): {
+  completeness_percent: number;
+  missing_fields: string[];
+} {
+  if (!profile) return { completeness_percent: 0, missing_fields: [...COMPLETENESS_FIELDS] as string[] };
+  const missing: string[] = [];
+  const has = (v: unknown) => {
+    if (v == null) return false;
+    if (Array.isArray(v)) return v.length > 0;
+    if (typeof v === 'string') return v.trim().length > 0;
+    return true;
+  };
+  if (!has(profile.artistName)) missing.push('artistName');
+  if (!has(profile.genre)) missing.push('genre');
+  if (!has(profile.experience)) missing.push('experience');
+  if (!has(profile.goals)) missing.push('goals');
+  if (!has(profile.profilePicture)) missing.push('profilePicture');
+  if (!has(profile.socialLinks?.instagram)) missing.push('socialLinks.instagram');
+  if (!has(profile.socialLinks?.soundcloud)) missing.push('socialLinks.soundcloud');
+  if (!has(profile.socialLinks?.spotify)) missing.push('socialLinks.spotify');
+  const filled = COMPLETENESS_FIELDS.length - missing.length;
+  return {
+    completeness_percent: Math.round((filled / COMPLETENESS_FIELDS.length) * 100),
+    missing_fields: missing,
+  };
+}
 
 const ProfilePage = () => {
   const { user, logout } = useAuth();
@@ -346,7 +384,21 @@ const ProfilePage = () => {
                     </div>
                     
                     <div className="flex justify-end">
-                      <Button onClick={() => trackEvent('profile_updated', { fieldsChanged: ['profile'] })}>
+                      <Button onClick={() => {
+                        const read = (id: string) =>
+                          (document.getElementById(id) as HTMLInputElement | HTMLSelectElement | null)?.value ?? '';
+                        const candidates: Array<{ key: string; before: string; after: string }> = [
+                          { key: 'artistName', before: profile.artistName ?? '', after: read('artistName') },
+                          { key: 'genre', before: profile.genre ?? '', after: read('genre') },
+                          { key: 'bio', before: '', after: read('bio') },
+                        ];
+                        const fields_changed = candidates
+                          .filter(({ before, after }) => before.trim() !== after.trim())
+                          .map(({ key }) => key);
+                        track('profile_updated', { fields_changed });
+                        const { completeness_percent, missing_fields } = computeCompleteness(profile);
+                        track('profile_completeness', { completeness_percent, missing_fields });
+                      }}>
                         Save Changes
                       </Button>
                     </div>

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Bot, X } from 'lucide-react';
 import Button from '../ui/Button';
+import { track } from '../../utils/analytics';
+import { useAuth } from '../../context/AuthContext';
 
 interface AiConsentModalProps {
   isOpen: boolean;
@@ -24,12 +26,16 @@ export function grantAiConsent(): void {
 
 const AiConsentModal = ({ isOpen, onAccept, onClose }: AiConsentModalProps) => {
   const { t } = useTranslation();
+  const { user } = useAuth();
   const [checked, setChecked] = useState(false);
 
   if (!isOpen) return null;
 
   const handleAccept = () => {
     grantAiConsent();
+    if (user?.id) {
+      track('ai_consent_given', { userId: user.id });
+    }
     onAccept();
   };
 

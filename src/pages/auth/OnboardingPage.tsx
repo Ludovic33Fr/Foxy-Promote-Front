@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Music, ChevronRight, ChevronLeft } from 'lucide-react';
 import Button from '../../components/ui/Button';
 import { useAuth } from '../../context/AuthContext';
-import { trackEvent } from '../../utils/analytics';
+import { track } from '../../utils/analytics';
 import { sanitizeText } from '../../utils/consent';
 
 const OnboardingPage = () => {
@@ -29,7 +29,7 @@ const OnboardingPage = () => {
 
   const handleNext = () => {
     const stepValues: Record<number, unknown> = { 1: genre, 2: experience, 3: goals };
-    trackEvent('onboarding_step_completed', { step, value: stepValues[step] });
+    track('onboarding_step_completed', { step, value: stepValues[step] });
     setStep(step + 1);
   };
 
@@ -54,9 +54,14 @@ const OnboardingPage = () => {
         goals
       }));
       
-      const durationSeconds = Math.round((Date.now() - startTimeRef.current) / 1000);
-      trackEvent('onboarding_step_completed', { step: 3, value: goals });
-      trackEvent('onboarding_completed', { durationSeconds, genre, experience, goalsCount: goals.length });
+      const duration_seconds = Math.round((Date.now() - startTimeRef.current) / 1000);
+      track('onboarding_step_completed', { step: 3, value: goals });
+      track('onboarding_completed', {
+        duration_seconds,
+        genre,
+        experienceLevel: experience,
+        goals,
+      });
       setStep(4);
     } catch (error) {
       console.error('Error completing onboarding:', error);
@@ -213,7 +218,11 @@ const OnboardingPage = () => {
               <Button
                 onClick={() => {
                   if (openQuestion.trim()) {
-                    trackEvent('onboarding_open_question', { responseText: sanitizeText(openQuestion) });
+                    const sanitized = sanitizeText(openQuestion);
+                    track('onboarding_open_question', {
+                      response_text: sanitized,
+                      response_length: sanitized.length,
+                    });
                   }
                   navigate('/dashboard');
                 }}

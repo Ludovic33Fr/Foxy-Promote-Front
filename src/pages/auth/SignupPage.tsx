@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 import Button from '../../components/ui/Button';
 import { useAuth } from '../../context/AuthContext';
-import { trackEvent } from '../../utils/analytics';
+import { track } from '../../utils/analytics';
 
 const SignupPage = () => {
   const { t } = useTranslation();
@@ -21,10 +21,19 @@ const SignupPage = () => {
 
   const handleGoogleSuccess = async (credentialResponse: any) => {
     setErrors({});
-    trackEvent('signup_started', { method: 'google' });
+    track('signup_started', { method: 'google' });
     if (credentialResponse.credential) {
       const success = await loginWithGoogle(credentialResponse.credential);
       if (success) {
+        const saved = localStorage.getItem('auth');
+        const userId = saved ? (JSON.parse(saved).user?.id as string | undefined) : undefined;
+        if (userId) {
+          track('signup_completed', {
+            method: 'google',
+            userId,
+            referrer: document.referrer || '$direct',
+          });
+        }
         navigate('/dashboard');
       } else {
         setErrors({ form: t('auth.signup.errors.invalid') });
@@ -66,9 +75,13 @@ const SignupPage = () => {
     
     try {
       setIsLoading(true);
-      trackEvent('signup_started', { method: 'email' });
-      await signup(email, password, artistName);
-      trackEvent('signup_completed', { method: 'email' });
+      track('signup_started', { method: 'email' });
+      const newUser = await signup(email, password, artistName);
+      track('signup_completed', {
+        method: 'email',
+        userId: newUser.id,
+        referrer: document.referrer || '$direct',
+      });
       navigate('/onboarding');
     } catch (error) {
       console.error('Signup error:', error);

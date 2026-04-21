@@ -8,7 +8,7 @@ import SubmissionCard from '../../components/promotion/SubmissionCard';
 import { Track } from '../../types';
 import { useAuth } from '../../context/AuthContext';
 import { useSubscription } from '../../context/SubscriptionContext';
-import { trackEvent } from '../../utils/analytics';
+import { track, trackEvent } from '../../utils/analytics';
 
 const PromotionPage = () => {
   const { t } = useTranslation();
@@ -79,7 +79,7 @@ const PromotionPage = () => {
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       console.log(`Track submitted: ${trackId}`);
-      trackEvent('track_submitted_to_label', { trackId });
+      track('track_submitted_to_label', { trackId });
 
       // In a real app, we would update the submission count in the user's subscription
       return true;

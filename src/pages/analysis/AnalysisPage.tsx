@@ -15,9 +15,10 @@ import AnalysisMicroFeedback from '../../components/analysis/AnalysisMicroFeedba
 import WaveformVisualizer from '../../components/analysis/WaveformVisualizer';
 import { fetchSong, getAudioStreamUrl } from '../../services/api';
 import { ChatMessage } from '../../types';
-import { trackEvent } from '../../utils/analytics';
+import { track, trackEvent } from '../../utils/analytics';
 import { recordFirstAnalysis } from '../../hooks/useNpsTrigger';
 import { usePlayer } from '../../context/PlayerContext';
+import SectionTracker from '../../components/analysis/SectionTracker';
 
 const AnalysisPage = () => {
   const { t } = useTranslation();
@@ -70,6 +71,8 @@ const AnalysisPage = () => {
         });
         recordFirstAnalysis();
 
+        track('chat_opened', { trackId });
+
         // Initial AI message
         const initialMsg: ChatMessage = {
           id: 'initial',
@@ -89,29 +92,37 @@ const AnalysisPage = () => {
   }, [trackId]);
 
   const handleSendMessage = async (content: string) => {
-    trackEvent('chat_message_sent', { trackId, messageLength: content.length });
+    const message_index = messages.filter(m => m.sender === 'user').length + 1;
+    track('chat_message_sent', { trackId, message_length: content.length, message_index });
     const userMessage: ChatMessage = {
       id: `msg-${Date.now()}-user`,
       sender: 'user',
       content,
       timestamp: new Date().toISOString()
     };
-    
+
     setMessages(prev => [...prev, userMessage]);
     setIsAiTyping(true);
-    
+
+    const requestStart = Date.now();
     try {
       // simulate API/AI delay
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
+      const aiContent = `C'est une excellente question sur "${song?.name}". Sur la base de mon analyse, je vous conseille de porter une attention particulière à la transition à ${song?.advice?.musicalAnalysis?.structure?.[1]?.timecode || '1:30'}. N'oubliez pas que votre potentiel viral est de ${song?.advice?.tiktokPotential?.viralScore || 90}%, ce qui est exceptionnel !`;
       const aiMessage: ChatMessage = {
         id: `msg-${Date.now()}-ai`,
         sender: 'ai',
-        content: `C'est une excellente question sur "${song?.name}". Sur la base de mon analyse, je vous conseille de porter une attention particulière à la transition à ${song?.advice?.musicalAnalysis?.structure?.[1]?.timecode || '1:30'}. N'oubliez pas que votre potentiel viral est de ${song?.advice?.tiktokPotential?.viralScore || 90}%, ce qui est exceptionnel !`,
+        content: aiContent,
         timestamp: new Date().toISOString()
       };
-      
+
       setMessages(prev => [...prev, aiMessage]);
+      track('chat_response_received', {
+        trackId,
+        response_time_ms: Date.now() - requestStart,
+        response_length: aiContent.length,
+      });
     } catch (error) {
       console.error('Failed to get AI response:', error);
     } finally {
@@ -259,6 +270,7 @@ const AnalysisPage = () => {
           <div className="lg:col-span-8 space-y-12">
             
             {/* Section 1: Analyse Musicale & Structure */}
+            <SectionTracker trackId={trackId} section="musical">
             <section>
               <div className="flex items-center gap-2 mb-6">
                 <div className="h-8 w-1 bg-primary rounded-full"></div>
@@ -304,8 +316,10 @@ const AnalysisPage = () => {
               </div>
               <AnalysisMicroFeedback section="musical" trackId={trackId || ''} />
             </section>
+            </SectionTracker>
 
             {/* Section 2: Évaluation Stratégique */}
+            <SectionTracker trackId={trackId} section="strategic">
             <section>
               <div className="flex items-center justify-between mb-6">
                 <div className="flex items-center gap-2">
@@ -371,8 +385,10 @@ const AnalysisPage = () => {
               </div>
               <AnalysisMicroFeedback section="strategic" trackId={trackId || ''} />
             </section>
+            </SectionTracker>
 
             {/* Section 3: TikTok Potential */}
+            <SectionTracker trackId={trackId} section="tiktok">
             <section>
               <div className="flex items-center gap-2 mb-6">
                 <div className="h-8 w-1 bg-accent rounded-full"></div>
@@ -422,6 +438,7 @@ const AnalysisPage = () => {
               </div>
               <AnalysisMicroFeedback section="tiktok" trackId={trackId || ''} />
             </section>
+            </SectionTracker>
 
           </div>
 

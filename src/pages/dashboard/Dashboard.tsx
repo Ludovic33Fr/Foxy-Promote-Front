@@ -5,10 +5,10 @@ import { useTranslation } from 'react-i18next';
 import Navbar from '../../components/layout/Navbar';
 import Button from '../../components/ui/Button';
 import TrackCard from '../../components/dashboard/TrackCard';
-import UploadTrackModal from '../../components/dashboard/UploadTrackModal';
+import UploadTrackModal, { UploadMeta } from '../../components/dashboard/UploadTrackModal';
 import { Track } from '../../types';
 import { useSubscription } from '../../context/SubscriptionContext';
-import { trackEvent } from '../../utils/analytics';
+import { track, trackEvent } from '../../utils/analytics';
 import { useNpsTrigger } from '../../hooks/useNpsTrigger';
 import NpsSurvey from '../../components/feedback/NpsSurvey';
 import { useAuth } from '../../context/AuthContext';
@@ -62,43 +62,38 @@ const Dashboard = () => {
     fetchTracks();
   }, [user]);
 
-  const handleUploadTrack = async (title: string, file: File) => {
+  const handleUploadTrack = async (title: string, file: File, meta: UploadMeta) => {
     // 1. Generate a temporary ID for tracking
     const tempId = 'temp-' + Date.now();
-    
+
     // 2. Wait 5 seconds as requested by the user
     await new Promise(resolve => setTimeout(resolve, 5000));
-    
+
     // 3. Add the track in "analyzing" mode immediately after the 5s wait
     const placeholderTrack: Track = {
       id: tempId,
       userId: user?.id || '',
       title: title,
       uploadedAt: new Date().toISOString(),
-      audioUrl: URL.createObjectURL(file), // Local preview
+      audioUrl: URL.createObjectURL(file),
       duration: 0,
       status: 'analyzing'
     };
-    
+
     setTracks(prev => [placeholderTrack, ...prev]);
-    
-    // 4. At this point, the modal will close because handleUploadTrack (onUpload) resolves.
-    
-    // 5. Start the real API call in the background (or continue if you want to wait for it)
-    // We don't 'await' it here if we want the modal to close after 5s regardless of API speed, 
-    // but the user said "Une fois l'upload validé... sortir du mode analysis", implying we should wait or handle the resolution.
-    
+
     try {
       const result = await generateAdvice(user!.artistId!, title, file);
 
-      trackEvent('track_upload_completed', {
+      track('track_upload_completed', {
         trackId: result.id,
         fileSize: file.size,
-        title,
-        is_first_upload: tracks.length <= 1,
+        fileFormat: meta.fileFormat,
+        durationSec: meta.durationSec,
+        is_first_upload: tracks.length === 0,
+        upload_duration_ms: Date.now() - meta.startedAt,
       });
 
-      // 6. Update the specific track in the list with real data
       setTracks(currentTracks =>
         currentTracks.map(t =>
           t.id === tempId
@@ -119,7 +114,6 @@ const Dashboard = () => {
       trackEvent('track_upload_failed', {
         errorType: error instanceof Error ? error.message : 'unknown',
       });
-      // Optional: Set status to error
       setTracks(currentTracks =>
         currentTracks.map(t => t.id === tempId ? { ...t, status: 'error' } : t)
       );
@@ -169,7 +163,7 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="mt-4 md:mt-0 md:ml-4 self-stretch md:self-center">
-              <Link to="/pricing" onClick={() => trackEvent('upgrade_banner_clicked', { currentPlan: 'free' })}>
+              <Link to="/pricing" onClick={() => track('upgrade_banner_clicked', { current_plan: 'free', placement: 'dashboard_banner' })}>
                 <Button variant="outline" size="sm" data-attr="banner-upgrade">{t('dashboard.free_plan.view')}</Button>
               </Link>
             </div>

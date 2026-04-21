@@ -3,12 +3,38 @@ import { X, Upload, Music, Info } from 'lucide-react';
 import Button from '../ui/Button';
 import { useSubscription } from '../../context/SubscriptionContext';
 import AiConsentModal, { hasAiConsent } from '../consent/AiConsentModal';
-import { trackEvent } from '../../utils/analytics';
+import { track } from '../../utils/analytics';
+
+export interface UploadMeta {
+  startedAt: number;
+  durationSec?: number;
+  fileFormat: 'mp3' | 'wav';
+}
 
 interface UploadTrackModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onUpload: (title: string, file: File) => Promise<void>;
+  onUpload: (title: string, file: File, meta: UploadMeta) => Promise<void>;
+}
+
+function detectFileFormat(file: File): 'mp3' | 'wav' {
+  if (file.type === 'audio/wav' || /\.wav$/i.test(file.name)) return 'wav';
+  return 'mp3';
+}
+
+function probeAudioDuration(file: File): Promise<number | undefined> {
+  return new Promise((resolve) => {
+    const url = URL.createObjectURL(file);
+    const audio = document.createElement('audio');
+    const cleanup = () => URL.revokeObjectURL(url);
+    audio.addEventListener('loadedmetadata', () => {
+      const d = isFinite(audio.duration) ? Math.round(audio.duration) : undefined;
+      cleanup();
+      resolve(d);
+    }, { once: true });
+    audio.addEventListener('error', () => { cleanup(); resolve(undefined); }, { once: true });
+    audio.src = url;
+  });
 }
 
 const UploadTrackModal = ({ isOpen, onClose, onUpload }: UploadTrackModalProps) => {
@@ -73,10 +99,22 @@ const UploadTrackModal = ({ isOpen, onClose, onUpload }: UploadTrackModalProps) 
     }
   };
 
+  const attemptRef = useRef(0);
+
   const doUpload = async () => {
+    if (!file) return;
+    const fileFormat = detectFileFormat(file);
+    const durationSec = await probeAudioDuration(file);
+    const startedAt = Date.now();
+    attemptRef.current += 1;
+    track('track_upload_started', {
+      attempt_number: attemptRef.current,
+      fileSize: file.size,
+      fileFormat,
+    });
     try {
       setIsUploading(true);
-      await onUpload(title, file!);
+      await onUpload(title, file, { startedAt, durationSec, fileFormat });
       onClose();
     } catch (error) {
       console.error('Upload failed:', error);
@@ -104,7 +142,6 @@ const UploadTrackModal = ({ isOpen, onClose, onUpload }: UploadTrackModalProps) 
       return;
     }
 
-    trackEvent('track_upload_started', { attemptNumber: 1 });
     await doUpload();
   };
 

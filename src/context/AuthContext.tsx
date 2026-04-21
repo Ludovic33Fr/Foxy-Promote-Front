@@ -8,7 +8,7 @@ interface AuthContextType {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<boolean>;
   loginWithGoogle: (credential: string) => Promise<boolean>;
-  signup: (email: string, password: string, artistName: string) => Promise<void>;
+  signup: (email: string, password: string, artistName: string) => Promise<User>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
 }
@@ -177,13 +177,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const signup = async (email: string, password: string, artistName: string) => {
+  const signup = async (email: string, password: string, artistName: string): Promise<User> => {
     setIsLoading(true);
     try {
       // For now, simple signup is still mock or can be integrated later
       // Simulate API delay
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       const mockUser: User = {
         id: 'user' + Date.now(),
         email,
@@ -191,9 +191,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         createdAt: new Date().toISOString(),
         onboardingCompleted: false
       };
-      
+
       setUser(mockUser);
       localStorage.setItem('auth', JSON.stringify({ user: mockUser, token: 'mock-token' }));
+
+      identifyUser(
+        mockUser.id,
+        { artistName: mockUser.artistName, email: mockUser.email, onboardingCompleted: false },
+        { signupMethod: 'email', signupDate: mockUser.createdAt },
+      );
+
+      return mockUser;
     } catch (error) {
       console.error('Signup error:', error);
       throw error;

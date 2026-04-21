@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ThumbsUp, ThumbsDown, Send } from 'lucide-react';
-import { trackEvent } from '../../utils/analytics';
+import { track, AnalysisSection } from '../../utils/analytics';
 import { sanitizeText } from '../../utils/consent';
 
 interface AnalysisMicroFeedbackProps {
-  section: string;
+  section: AnalysisSection;
   trackId: string;
 }
 
@@ -17,7 +17,7 @@ const AnalysisMicroFeedback = ({ section, trackId }: AnalysisMicroFeedbackProps)
 
   const handleRating = (value: 'positive' | 'negative') => {
     setRating(value);
-    trackEvent('analysis_feedback_given', { rating: value, section, trackId });
+    track('analysis_feedback_given', { rating: value, section, trackId });
     if (value === 'positive') {
       setSubmitted(true);
     }
@@ -25,10 +25,11 @@ const AnalysisMicroFeedback = ({ section, trackId }: AnalysisMicroFeedbackProps)
 
   const handleSubmitComment = () => {
     if (comment.trim()) {
-      trackEvent('analysis_feedback_comment', {
-        commentText: sanitizeText(comment),
-        section,
+      const sanitized = sanitizeText(comment);
+      track('analysis_feedback_comment', {
         trackId,
+        section,
+        comment_length: sanitized.length,
       });
     }
     setSubmitted(true);
