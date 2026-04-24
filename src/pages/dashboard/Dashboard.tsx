@@ -82,42 +82,51 @@ const Dashboard = () => {
 
     setTracks(prev => [placeholderTrack, ...prev]);
 
-    try {
-      const result = await generateAdvice(user!.artistId!, title, file);
+    // 4. Run the API call in the background so the modal can close
+    const runBackgroundAnalysis = async () => {
+      try {
+        const response = await generateAdvice(user!.artistId!, title, file);
+        const result = response.songLight || response;
 
-      track('track_upload_completed', {
-        trackId: result.id,
-        fileSize: file.size,
-        fileFormat: meta.fileFormat,
-        durationSec: meta.durationSec,
-        is_first_upload: tracks.length === 0,
-        upload_duration_ms: Date.now() - meta.startedAt,
-      });
+        track('track_upload_completed', {
+          trackId: result.id,
+          fileSize: file.size,
+          fileFormat: meta.fileFormat,
+          durationSec: meta.durationSec,
+          is_first_upload: tracks.length === 0,
+          upload_duration_ms: Date.now() - meta.startedAt,
+        });
 
-      setTracks(currentTracks =>
-        currentTracks.map(t =>
-          t.id === tempId
-            ? {
-                ...t,
-                id: result.id,
-                title: result.name || title,
-                uploadedAt: result.insertDate || t.uploadedAt,
-                thumbnailUrl: result.urlPicture,
-                genre: result.style,
-                status: 'analyzed'
-              }
-            : t
-        )
-      );
-    } catch (error) {
-      console.error('Background upload/analysis failed:', error);
-      trackEvent('track_upload_failed', {
-        errorType: error instanceof Error ? error.message : 'unknown',
-      });
-      setTracks(currentTracks =>
-        currentTracks.map(t => t.id === tempId ? { ...t, status: 'error' } : t)
-      );
-    }
+        setTracks(currentTracks =>
+          currentTracks.map(t =>
+            t.id === tempId
+              ? {
+                  ...t,
+                  id: result.id,
+                  title: result.name || title,
+                  uploadedAt: result.insertDate || t.uploadedAt,
+                  thumbnailUrl: result.urlPicture,
+                  genre: result.style,
+                  bpm: result.tempo,
+                  key: result.key,
+                  duration: meta.durationSec || 0,
+                  status: 'analyzed'
+                }
+              : t
+          )
+        );
+      } catch (error) {
+        console.error('Background upload/analysis failed:', error);
+        trackEvent('track_upload_failed', {
+          errorType: error instanceof Error ? error.message : 'unknown',
+        });
+        setTracks(currentTracks =>
+          currentTracks.map(t => t.id === tempId ? { ...t, status: 'error' } : t)
+        );
+      }
+    };
+
+    runBackgroundAnalysis();
   };
 
   const currentPlan = getCurrentPlan();
