@@ -32,6 +32,7 @@ export interface Track {
   genre?: string;
   bpm?: number;
   key?: string;
+  globalScore?: number;
   filePath?: string;
   urlSoundCloud?: string;
 }

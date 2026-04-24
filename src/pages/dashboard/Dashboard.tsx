@@ -47,6 +47,7 @@ const Dashboard = () => {
           genre: item.style,
           bpm: item.bpm,
           key: item.key,
+          globalScore: item.globalScore,
           filePath: item.filePath,
           urlSoundCloud: item.urlSoundCloud
         }));
@@ -109,6 +110,7 @@ const Dashboard = () => {
                   genre: result.style,
                   bpm: result.tempo,
                   key: result.key,
+                  globalScore: result.globalScore,
                   duration: meta.durationSec || 0,
                   status: 'analyzed'
                 }

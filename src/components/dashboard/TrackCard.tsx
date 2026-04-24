@@ -127,31 +127,40 @@ const TrackCard = ({ track }: TrackCardProps) => {
           )}
         </div>
         
-        <div className="mt-4">
-          {track.status === 'analyzed' ? (
-            <Link 
-              to={`/analysis/${track.id}`}
-              className="text-primary hover:text-primary/80 font-medium text-sm flex items-center"
-            >
-              {t('dashboard.track_actions.view_analysis')}
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-              </svg>
-            </Link>
-          ) : track.status === 'analyzing' ? (
-            <div className="flex flex-col gap-2 w-full">
-              <div className="flex items-center text-sm text-primary font-medium animate-pulse">
-                <div className="mr-2 h-4 w-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
-                {t('dashboard.track_status.analyzing_msg')}
+        <div className="mt-4 flex items-end justify-between">
+          <div className="flex-1">
+            {track.status === 'analyzed' ? (
+              <Link 
+                to={`/analysis/${track.id}`}
+                className="text-primary hover:text-primary/80 font-medium text-sm flex items-center"
+              >
+                {t('dashboard.track_actions.view_analysis')}
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
+              </Link>
+            ) : track.status === 'analyzing' ? (
+              <div className="flex flex-col gap-2 w-full pr-4">
+                <div className="flex items-center text-sm text-primary font-medium animate-pulse">
+                  <div className="mr-2 h-4 w-4 rounded-full border-2 border-primary border-t-transparent animate-spin"></div>
+                  {t('dashboard.track_status.analyzing_msg')}
+                </div>
+                <div className="w-full bg-muted rounded-full h-1.5 overflow-hidden">
+                  <div className="bg-primary h-full rounded-full animate-progress-indeterminate"></div>
+                </div>
               </div>
-              <div className="w-full bg-muted rounded-full h-1.5 overflow-hidden">
-                <div className="bg-primary h-full rounded-full animate-progress-indeterminate"></div>
-              </div>
+            ) : (
+              <button className="text-primary hover:text-primary/80 font-medium text-sm">
+                {t('dashboard.track_actions.retry')}
+              </button>
+            )}
+          </div>
+
+          {track.status === 'analyzed' && track.globalScore !== undefined && (
+            <div className="flex flex-col items-end ml-4">
+              <div className="text-3xl font-black text-primary drop-shadow-sm leading-none">{track.globalScore}</div>
+              <div className="text-[9px] font-bold uppercase tracking-widest text-muted-foreground mt-1">Global Score</div>
             </div>
-          ) : (
-            <button className="text-primary hover:text-primary/80 font-medium text-sm">
-              {t('dashboard.track_actions.retry')}
-            </button>
           )}
         </div>
       </div>
